@@ -29,16 +29,24 @@ Survival rate per age           number of litter weaning per age
 
 '''
 
+import csv
 import pandas as pd
 import numpy as np
 from scipy.linalg import leslie
 from born_alive import get_dates
 
 # import simple farrowing data
-pigs_df = pd.read_csv("farrowing_data_simple.csv")
-print(pigs_df["Sow"])
 
-print(pigs_df[pigs_df["Sow"] == 'KPOF0034'])
+pigs_df = pd.read_csv("farrowing_data_simple.csv")
+
+with open('unique_sow_id_list.csv', newline='') as f:
+    reader = csv.reader(f)
+    unique_sow = list(reader)
+
+# unique_sow = pd.read_csv("unique_sow_id_list.csv")
+
+
+# print(pigs_df[pigs_df["Sow"] == 'KPOF0034'])
 
 '''
 CALCULATE FECUNDITRY (here Weaning) RATE
@@ -48,9 +56,18 @@ foods)
 3. Calculate age of each piglet
 4. Count number of piglets at each age (accurate to each day). This is our 
 '''
-
-same_infants = pigs_df["Sow"]
+print(unique_sow)
+for sow in unique_sow[1:]:
+    print(sow)
+    sow_info = pigs_df[pigs_df["Sow"] == str(sow)]
+    print(sow_info)
+    # numberInFarrow = len(pigs_df[pigs_df["Sow"] == sow])
+#same_infants = pigs_df["Sow"]
+#print(same_infants)
 
 # calculate death rate
 
-#Incomplete (obviously), Just uploading in this state to show my train of thought
+
+
+
+# for 27-05-2020

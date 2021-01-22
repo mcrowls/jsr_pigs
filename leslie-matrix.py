@@ -35,27 +35,25 @@ import pandas as pd
 import numpy as np
 from scipy.linalg import leslie
 from born_alive import get_dates
+from matplotlib import pyplot as plt
 
 # data used taken from excel manually,
 # assessing jan_1st farrowing data only
 with open('data\jan_1_sale_death_dates.csv', newline='') as f:
     reader = csv.reader(f, delimiter=',')
     death_rate = [row for row in reader]
-    #print(death_rate)
 
 with open('data\jan_1_sale_birth_date.csv', newline='') as f:
     reader = csv.reader(f, delimiter=',')
     birth_rate = [row for row in reader]
-    #print(birth_rate)
+
 '''
-CALCULATE FECUNDITRY RATE for WEANING ON 1st JAN
-Calculates the probability of 
+CALCULATE fecundity RATE for WEANING ON 1st JAN
 '''
 
 # make list of total number of days from first birth to last death
 base = datetime.date(2019, 12, 2)
 days_in_model = [base + datetime.timedelta(days=x) for x in range(189)]
-#print(days_in_model)
 
 # covert dates to datetime values
 for row in birth_rate[1:]:
@@ -65,26 +63,27 @@ for row in death_rate[1:]:
     row[0] = datetime.datetime.strptime(row[0], "%d/%m/%Y").date()
 
 # make dictionary of births per day
-fecunditry_dict = dict()
+birth_dict = dict()
 for date in days_in_model:
-    fecunditry_dict[str(date)] = 0
+    birth_dict[str(date)] = 0
 
-#make fecunditry dictionary - for each date we have  (the number that were born)/(the total population)
+# make fecundity dictionary - for each date we have (the number that were born)/(the total population)
 for row1 in days_in_model:
     for row2 in birth_rate[1:]:
         if row1 == row2[0]:
-            fecunditry_dict[str(row1)] += int(row2[1])
+            birth_dict[str(row1)] += int(row2[1])
 
 
-#Experimentingggg===================
-# take ones born on first day, gives fecunditry rate for these pigs born on this day
+# Experimentingggg===================
+# take ones born on first day, gives fecundity rate for these pigs born on this day
+fecundity_dict = dict(birth_dict)
 for row1 in days_in_model[1:]:
-    fecunditry_dict[str(row1)] = 0
+    fecundity_dict[str(row1)] = 0
 
-#give 100% chance to birth on day 1
+# give 100% chance to birth on day 1
 day_1 = '2019-12-02'
-fecunditry_dict[day_1] = 1
-# print(fecunditry_dict)
+fecundity_dict[day_1] = 1
+# print(fecundity_dict)
 
 # make survival rate out of probability of death per date for all pigs weaned on 1st jan / total deaths for all pigs
 # weaned on 1st jan
@@ -100,7 +99,6 @@ for day_of_death in death_rate[1:]:
     deaths_per_day_dict[str(day_of_death[0])] = int(day_of_death[1])
 
 total_deaths = sum(deaths_per_day_dict.values())
-# print(total_deaths)
 
 # create survival rate
 for key in survival_dict:
@@ -109,21 +107,56 @@ for key in survival_dict:
         # print(survival_probability)
         survival_dict[key] = survival_probability
 
-# print(survival_dict)
-# print(fecunditry_dict)
-
 survival_list = list(survival_dict.values())
-fecunditry_list = list(fecunditry_dict.values())
+survival_list.pop(0)
+fecundity_list = list(fecundity_dict.values())
 
-# print(survival_list)
-# print(fecunditry_list)
+#print(survival_list)
+#print(fecundity_list)
 
-# make diagonal matrix with survival rate as diagonal
-leslie_matrix = np.eye(len(survival_list))
-diagonal = np.diag_indices_from(leslie_matrix)
-leslie_matrix[diagonal] = survival_list
+leslie_matrix = leslie(fecundity_list, survival_list)
+#print(leslie_matrix)
 
-# make first row fecunditry rate
-np.concatenate(([fecunditry_list, leslie_matrix]))
-print(leslie_matrix)
-print(len(leslie_matrix[:,0]))
+'''
+Create P0 - our starting population. Index 0 is all the newborns on that day but has to be = 0; otherwise new babies 
+equat to that value would be born each day. Index 1 and so forth is the number that age as time goes on.
+As the final birth from the subset of piglets weaned on the 1st jan happened on '2019-12-08', this will be the day
+before day 1, to allow day 0 with 0 births
+'''
+
+P0 = [0, 72, 161, 193, 464, 421, 398, 69] + [0] * (len(fecundity_list) - 8)
+
+
+'''
+create results array, where each row is a different day in the model. As time goes on, the pigs move down the vector,
+corresponding to them getting older. Finally they reach survival rate areas != 0 and reduce in numbers.
+'''
+results = np.array(([P0]))
+
+P_old = P0
+
+for i in range(200):
+    P_new = np.dot(leslie_matrix, P_old)
+    results = np.append(results, [P_new], axis=0)
+
+    P_old = P_new
+
+'''
+currently displaying total population over time. But we can track age groups separately, for all ages that weaned
+on the 1st Jan. Could include more weaning times nearby this figure to get a more accurate prediction of expected
+death time
+
+to add date labels (unreadable right now) use
+
+plt.plot(list(fecundity_dict.keys()), total_pop[0:189])
+
+'''
+total_pop = []
+for row in results:
+    total_pop.append(sum(row))
+
+plt.plot(total_pop[0:189])
+plt.title('population of pigs that weaned 1st January')
+plt.ylabel('total population')
+plt.xlabel('days from 2019-12-09')
+plt.show()

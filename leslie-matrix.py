@@ -74,7 +74,6 @@ for row1 in days_in_model:
             birth_dict[str(row1)] += int(row2[1])
 
 
-# Experimentingggg===================
 # take ones born on first day, gives fecundity rate for these pigs born on this day
 fecundity_dict = dict(birth_dict)
 for row1 in days_in_model[1:]:

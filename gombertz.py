@@ -1,9 +1,10 @@
 from functions import *
 import matplotlib.pyplot as plt
+import numpy as np
 
 
-weaning_csv = pd.read_csv('C:/Users/crowl/PycharmProjects/Pigs/Weaning/08-July-Weaning.csv')
-weight_csv = pd.read_csv('C:/Users/crowl/PycharmProjects/Pigs/Weights/08-July-Weights.csv')
+weaning_csv = pd.read_csv('C:/Users/charl/GitHub/jsr_pigs/Weaning/08-July-Weaning.csv')
+weight_csv = pd.read_csv('C:/Users/charl/GitHub/jsr_pigs/Weights/08-July-Weights.csv')
 
 birth_dates = weaning_csv['Date Served']
 weaning_dates = weaning_csv['Weaning Date']
@@ -37,3 +38,9 @@ plt.xlabel('days since birth')
 plt.ylabel('weight (kg)')
 plt.legend(loc='best')
 plt.show()
+
+
+# export weights and days
+output = np.array((x, y_gombertz, y_logistic))
+print(output)
+np.savetxt("gombertz_growth_data.csv", output, delimiter=",")

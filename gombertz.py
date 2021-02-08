@@ -19,6 +19,8 @@ for i in range(np.shape(selling_dates)[0]):
     weaning_to_selling.append(num_days)
 
 
+print(shift_from_weaning_weight(10))
+
 growth_rates = np.linspace(0, 1, 10000)
 x = np.linspace(0, 320, 10000)
 lowest_error_gombertz, growth_rate_gombertz = minimise_error_gombertz(weaning_to_selling, pig_weights, growth_rates)

@@ -129,6 +129,14 @@ def get_selling_dates(dates):
     return numbered_dates
 
 
+def shift_from_weaning_weight(weight):
+	# The weaning weight is about 10. We can initially model the growth as a linear relationship to see what the weight within the first
+	# 30 days will be
+	gradient = weight/30
+	shift = weight/gradient
+	return
+
+
 def gombertz(x, growth_rate):
     y = 135 * np.exp(-30 * np.exp(-growth_rate * x))
     return y

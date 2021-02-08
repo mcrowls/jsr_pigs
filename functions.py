@@ -106,7 +106,7 @@ def make_array(data):
 
 
 def get_selling_dates(dates):
-    # this array allows us to make put a number to the date ('01-Jan-20' : Jan ---> 1 because it is the index+1 of 'Jan'
+    # this array allows us to make put a number to the date ('01/Jan/20' : Jan ---> 1 because it is the index+1 of 'Jan'
     months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
     numbered_dates = []
     for date in dates:
@@ -129,12 +129,15 @@ def get_selling_dates(dates):
     return numbered_dates
 
 
+def get_weaning_days(
+
+
 def shift_from_weaning_weight(weight):
 	# The weaning weight is about 10. We can initially model the growth as a linear relationship to see what the weight within the first
 	# 30 days will be
 	gradient = weight/30
 	shift = weight/gradient
-	return
+	return shift
 
 
 def gombertz(x, growth_rate):

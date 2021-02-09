@@ -139,6 +139,13 @@ def gombertz(x, growth_rate,shift):
     y = 135 * np.exp(-shift * np.exp(-growth_rate * x)) # x in any of these equations will be the time 't'
     return y
 
+
+# returns the days until target weight is found (instead of weight after x number of days)
+def inverse_gombertz(starting_weight, target_weight, growth_rate):
+    t = (1/growth_rate) * (np.log(np.log(target_weight)) - np.log(np.log(135)) + np.log(30))
+    return t
+
+
 # Same as gombertz in terms of initial parameters but this model is actually a better fit for the data
 def logistic(x, growth_rate,shift):
     y = 135 / (1 + shift * np.exp(-growth_rate * x))

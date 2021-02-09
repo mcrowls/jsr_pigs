@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-weaning_csv = pd.read_csv('C:/Users/charl/GitHub/jsr_pigs/Weaning/08-July-Weaning.csv')
-weight_csv = pd.read_csv('C:/Users/charl/GitHub/jsr_pigs/Weights/08-July-Weights.csv')
+weaning_csv = pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/weaning/08-July-Weaning.csv')
+weight_csv = pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/Weights/08-July-Weights.csv')
 
 birth_dates = weaning_csv['Date Served']
 weaning_dates = weaning_csv['Weaning Date']
@@ -22,7 +22,7 @@ for i in range(np.shape(selling_dates)[0]):
     weaning_to_selling.append(num_days)
 
 
-print(shift_from_weaning_weight(10))
+#print(shift_from_weaning_weight(10))
 
 growth_rates = np.linspace(0, 1, 10000)
 # The days vary between 0 and 320 depending on the time of year.

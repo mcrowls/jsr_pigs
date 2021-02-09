@@ -14,6 +14,8 @@ weaning_date_days = calc_days(date_farrowed)
 pig_weights = weight_csv['Average Weight']
 selling_dates = get_selling_dates(weight_csv['Date Sold'])
 weaning_to_selling = []
+
+# This for loop gets the days between weaning and selling
 for i in range(np.shape(selling_dates)[0]):
     days = calc_days(selling_dates[i])
     num_days = days - weaning_date_days
@@ -23,6 +25,7 @@ for i in range(np.shape(selling_dates)[0]):
 print(shift_from_weaning_weight(10))
 
 growth_rates = np.linspace(0, 1, 10000)
+# The days vary between 0 and 320 depending on the time of year.
 x = np.linspace(0, 320, 10000)
 lowest_error_gombertz, growth_rate_gombertz = minimise_error_gombertz(weaning_to_selling, pig_weights, growth_rates)
 lowest_error_logistic, growth_rate_logistic = minimise_error_logistic(weaning_to_selling, pig_weights, growth_rates)

@@ -12,6 +12,8 @@ this way we can analyse previous data ONLY.'''
  array in the form [1, 1, 20]'''
 
 
+
+# How many pigs are in each farm
 def get_farm_numbers(data):
     farms = []
     for j in range(np.shape(data)[0]):
@@ -29,6 +31,8 @@ def get_farm_numbers(data):
     return farm_numbers
 
 
+
+# Probably won't need this function but it just creates 3 separate lists from the initial farms
 def separate_farms(data, farm_numbers):
     separated_farms = []
     farm = []
@@ -73,7 +77,7 @@ def get_dates(dates):
 '''From an array of the date, this function 'calc_days()' can work out how many days AD this is so we can subtract the days from
 eachother to work out how many days it took to wean etc. Bit of a roundabout way but it works...'''
 
-
+# Used to calculate the days since jesus christ popped it
 def calc_days(date_array):
     days_in_months = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     days = 0
@@ -98,6 +102,7 @@ def remove_zeros(alive, array):
     return alive, array
 
 
+#Silly function
 def make_array(data):
     array = []
     for data_no in range(np.size(data)):
@@ -129,27 +134,17 @@ def get_selling_dates(dates):
     return numbered_dates
 
 
-def get_weaning_days(
-
-
-def shift_from_weaning_weight(weight):
-	# The weaning weight is about 10. We can initially model the growth as a linear relationship to see what the weight within the first
-	# 30 days will be
-	gradient = weight/30
-	shift = weight/gradient
-	return shift
-
-
+# Can vary the growth rate but the shift and the max weight are fixed.
 def gombertz(x, growth_rate):
-    y = 135 * np.exp(-30 * np.exp(-growth_rate * x))
+    y = 135 * np.exp(-30 * np.exp(-growth_rate * x)) # x in any of these equations will be the time 't'
     return y
 
-
+# Same as gombertz in terms of initial parameters but this model is actually a better fit for the data
 def logistic(x, growth_rate):
     y = 135 / (1 + 30 * np.exp(-growth_rate * x))
     return y
 
-
+# Calculating the mean square error 
 def mean_squared_error_gombertz(x, y, growth_rate):
     error = 0
     for i in range(np.size(x)):
@@ -163,7 +158,7 @@ def mean_squared_error_logistic(x, y, growth_rate):
         error += (logistic(x[i], growth_rate) - y[i])**2
     return error
 
-
+#Picks the growth rate with the lowest error. X and Y in this case will be dates and weights
 def minimise_error_gombertz(x, y, growth_rate_array):
     lowest_error = np.inf
     best_growth_rate = 0
@@ -174,7 +169,7 @@ def minimise_error_gombertz(x, y, growth_rate_array):
             best_growth_rate = growth_rate
     return lowest_error, best_growth_rate
 
-
+# does the same thing
 def minimise_error_logistic(x, y, growth_rate_array):
     lowest_error = np.inf
     best_growth_rate = 0

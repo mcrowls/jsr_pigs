@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 
+print("hello world")
+
 def nd_maker():
     weight_csv = pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/Weight_Data.csv')
 

@@ -4,7 +4,7 @@ import numpy as np
 import random
 
 
-weight_csv = pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/Weight_Data.csv')
+weight_csv = pd.read_csv('Weight_Data.csv')
 
 dates = weight_csv['Date']
 days_post = weight_csv['Days Post Wean']
@@ -72,9 +72,3 @@ plt.xlabel('days since birth')
 plt.ylabel('weight (kg)')
 plt.legend(loc='best')
 plt.show()
-
-
-# export weights and days
-output = np.array((x1, y_gombertz, y_logistic))
-print(output)
-np.savetxt("gombertz_growth_data.csv", output, delimiter=",")

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from functions import *
 
 '''
-Help the cholive, this is driving him mad :((((((((((
+Plots the population change against time for 1st Jan weaning. Can be scaled up for all weaning populations
 '''
 
 
@@ -12,7 +12,7 @@ def calc_sale_dates_df(df):
     condition = df["number born/slaughtered"] > 0
     birth_dates = df.loc[condition]
     numerical_dates = df.loc[condition, "numerical date"]
-    days_growing = inverse_gombertz(7, 135, 0.0520)
+    days_growing = inverse_gombertz(7, 135, 0.0195)
 
     pred_numerical_dates = numerical_dates + days_growing
     pred_pop_change = -birth_dates["number born/slaughtered"]
@@ -56,6 +56,6 @@ pred_pop_change_df = calc_sale_dates_df(real_pop_change_df)
 
 plt.plot(real_numerical_dates, real_pop_change)
 plt.plot(pred_pop_change_df["numerical date"], pred_pop_change_df["number born/slaughtered"])
-plt.xlabel('Days since 1st Jan first birth')
+plt.xlabel('Days since 2nd Dec first birth')
 plt.ylabel('Number of pigs in population')
 plt.show()

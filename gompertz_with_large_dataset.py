@@ -45,8 +45,8 @@ lowest_error_logistic3, growth_rate_logistic3 = minimise_error_logistic(days_fro
 # need to weight the 3 different predictions accordingly based on accuracy of data
 lowest_error_gombertz = (lowest_error_gombertz1 + lowest_error_gombertz2)/2
 lowest_error_logistic = (lowest_error_logistic1 + lowest_error_logistic2)/2
-growth_rate_gombertz = (growth_rate_gombertz1 + growth_rate_gombertz2)/2
-growth_rate_logistic = (growth_rate_logistic1 + growth_rate_logistic2)/2
+growth_rate_gombertz = growth_rate_gombertz2
+growth_rate_logistic = growth_rate_logistic2
 print(lowest_error_gombertz1,lowest_error_gombertz2,lowest_error_gombertz3)
 y_gombertz = gombertz(x1, growth_rate_gombertz,shift) # 30 corresponds to the first shift (days since weaning)
 y_logistic = logistic(x1, growth_rate_logistic,shift)
@@ -70,6 +70,7 @@ plt.plot(x2, y_logistic1,color='orange')
 
 plt.xlabel('days since birth')
 plt.ylabel('weight (kg)')
+plt.title('Varying growth rate')
 plt.legend(loc='best')
 plt.show()
 

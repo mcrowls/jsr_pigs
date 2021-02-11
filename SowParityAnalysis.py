@@ -20,6 +20,14 @@ def FarmBornAlive(LowerRange, UpperRange, df, MaxSP):
     return NumbersBornAlive, SowParityCount
 
 
+# Function to find the average number born alive at each sow parity
+# Takes:
+#   MaxSP - The maximum sow parity in the dataframe
+#   NumberBornAlive - A list of total number born alive for each sow parity where index corresponds to sow parity
+#   SowParityCount - A list of the number of births at each sow parity where index corresponds to sow parity
+# Returns:
+#   AvgNumbersBornAlive - The average number born alive at each sow parity as a list where the index corresponds to
+# the sow parity
 def Average(MaxSP, NumberBornAlive, SowParityCount):
     AvgNumbersBornAlive = [0] * (MaxSP + 1)
     for i in range(0, MaxSP):
@@ -28,6 +36,18 @@ def Average(MaxSP, NumberBornAlive, SowParityCount):
     return AvgNumbersBornAlive
 
 
+# Function to find the total number born alive and the total number of births at each sow parity across all farms
+# Takes:
+#   EBNumberBA - A list of total number born alive for each sow parity for farm EB where index corresponds to sow
+# parity
+#   EBSowPC - A list of the number of births at each sow parity for farm EB where index corresponds to sow parity
+#   HWNumberBA - A list of total number born alive for each sow parity for farm HW where index corresponds to sow
+# parity
+#   HWSowPC - A list of the number of births at each sow parity for farm HW where index corresponds to sow parity
+#   SBNumberBA - A list of total number born alive for each sow parity for farm SB where index corresponds to sow
+# parity
+#   SBSowPC - A list of the number of births at each sow parity for farm SB where index corresponds to sow parity
+#   MaxSP - The maximum sow parity in the dataframe
 def SumFarms(EBNumberBA, EBSowPC, HWNumbersBA, HWSowPC, SBNumbersBA, SBSowPC, MaxSP):
     AllFarmsNBA = [0] * (MaxSP + 1)
     AllFarmsSPC = [0] * (MaxSP + 1)
@@ -37,6 +57,12 @@ def SumFarms(EBNumberBA, EBSowPC, HWNumbersBA, HWSowPC, SBNumbersBA, SBSowPC, Ma
     return AllFarmsNBA, AllFarmsSPC
 
 
+# Function to remove instances where there are no cases of birth of a pig at a certain sow parity
+# Takes:
+#   y - A list of the average number born alive where the index corresponds to sow parity
+# Returns:
+#   x - A list of sow parities without zero values for average number born alive
+#   y - A list of average number born alive without zero values as corresponding sow parities with the same index in x
 def RemoveZeros(y):
     x = list(range(0, len(y)))
     for i in range(0, y.count(0)):

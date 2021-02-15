@@ -151,7 +151,7 @@ def logistic(x, growth_rate,shift):
     y = 135 / (1 + shift * np.exp(-growth_rate * x))
     return y
 
-# Calculating the mean square error 
+# Calculating the mean square error
 def mean_squared_error_gombertz(x, y, growth_rate,shift):
     error = 0
     for i in range(np.size(x)):
@@ -187,3 +187,33 @@ def minimise_error_logistic(x, y, growth_rate_array,shift):
             best_growth_rate = growth_rate
     return lowest_error, best_growth_rate
 
+
+def group_dates_together(csv):
+    date_array = get_selling_dates(csv['Date'])
+    full_array = []
+    for i in range(1, 13):
+        month_array = []
+        for j in range(np.shape(date_array)[0]):
+            if date_array[j][1] == i:
+                month_array.append(csv.iloc[j])
+        full_array.append(month_array)
+    return full_array
+
+
+def get_individual_date(date):
+    months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+    if str(date) != 'nan':
+        date = str(date)
+        date_array = []
+        # gets '01-Jan-20' to ['01', 'Jan', '20']
+        split_date = date.split('/')
+        # We want everything in integer form
+        day = int(split_date[0])
+        date_array.append(day)
+        for i in range(np.size(months)):
+            if str(months[i]) == split_date[1]:
+                month = i + 1
+                date_array.append(month)
+        year = int(split_date[2])
+        date_array.append(year)
+    return date_array

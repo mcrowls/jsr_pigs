@@ -50,6 +50,7 @@ growth_rate_logistic = growth_rate_logistic2
 #print(lowest_error_gombertz1,lowest_error_gombertz2,lowest_error_gombertz3)
 #y_gombertz = gombertz(x1, growth_rate_gombertz,shift) # 30 corresponds to the first shift (days since weaning)
 y_logistic = logistic(x1, growth_rate_logistic,shift)
+print(growth_rate_logistic)
 
 mean_ave_weight = sum(ave_weight)/len(ave_weight)
 

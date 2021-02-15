@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import scipy.stats as sc
+from datetime import date
+
 
 
 '''The code below basically just gets all of the columns in the excel in a workable format. I have edited the excel file
@@ -90,6 +92,17 @@ def calc_days(date_array):
     days += date_array[0]
     return days
 
+def days_since_jan_01(weaning_date):
+    f_date = date(weaning_date[2], weaning_date[1], weaning_date[0])
+    l_date = date(2014, 1, 1)
+    delta = l_date - f_date
+    delt = delta.days
+    if delt > 365 or delt < 365:
+        delt = delt % 365
+    return delt
+
+
+
 
 def remove_zeros(alive, array):
     data_no = 0
@@ -133,6 +146,8 @@ def get_selling_dates(dates):
             numbered_dates.append(date_array)
     return numbered_dates
 
+def growth_rate(x,T,a,b,d):
+    return a*np.cos((b*(x+T)))+d
 
 # Can vary the growth rate but the shift and the max weight are fixed.
 def gombertz(x, growth_rate,shift):
@@ -148,7 +163,7 @@ def inverse_gombertz(starting_weight, target_weight, growth_rate):
 
 # Same as gombertz in terms of initial parameters but this model is actually a better fit for the data
 def logistic(x, growth_rate,shift):
-    y = 135 / (1 + shift * np.exp(-growth_rate * x))
+    y = 240 / (1 + shift * np.exp(-growth_rate * x))
     return y
 
 # Calculating the mean square error

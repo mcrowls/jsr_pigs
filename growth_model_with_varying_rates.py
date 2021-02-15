@@ -1,6 +1,8 @@
 from functions import *
+from growth_rate_functions import *
 import math
 import scipy.optimize as opt
+
 
 
 def cos_x(x, a, b, d):

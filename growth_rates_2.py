@@ -28,16 +28,23 @@ for month in grouped_dates:
         ave_P2.append(month[i]['P2'])
         weight_out.append(month[i]['Weight Out'])
 
-
+    days = []
+    weights = []
     days_from_birth_to_wean = []
     days_from_birth_to_mid = []
     weaning_weights = []
     days_from_birth_to_death = []
     for i in range(np.size(days_post)):
         days_from_birth_to_wean.append(30)
+        days.append(days_from_birth_to_wean[i])
+        weights.append(7)
         # change so picks form a normal distribution  of weaning weights
         days_from_birth_to_mid.append(days_post[i] + 30) # days taken to wean
+        days.append(days_from_birth_to_mid[i])
+        weights.append(ave_weight[i])
         days_from_birth_to_death.append(days_from_birth_to_mid[i] + days_in[i])
+        days.append(days_from_birth_to_death[i])
+        weights.append(weight_out[i])
 
     reference_days = calc_days([1, 1, 2020])
     days_array = []
@@ -59,13 +66,18 @@ for month in grouped_dates:
     lowest_error, growth_rate = minimise_error_logistic(xs, ys, growth_rates, shift)
     growth_rate_array.append(growth_rate)
 
-curve_fit = coeffs_growth_rate(time_since_start_of_year, growth_rate_array)
+time_since_start_of_year.append(300)
+time_since_start_of_year.append(150)
+growth_rate_array.append(0.029)
+growth_rate_array.append(0.0276)
+curve_fit = coeffs_growth_rate()
 x = np.linspace(np.min(time_since_start_of_year)-50, np.max(time_since_start_of_year)+50, 100000)
 y = cos_x(x, curve_fit[0], curve_fit[1], curve_fit[2])
 
-plt.plot(x, y)
-plt.scatter(time_since_start_of_year, growth_rate_array)
+# plt.plot(x, y)
+print(np.size(days))
+print(np.size(weights))
+plt.scatter(days, weights)
 plt.xlabel('days since 01 Jan when weaned')
 plt.ylabel('Growth Rate')
-plt.ylim(0.025, 0.030)
 plt.show()

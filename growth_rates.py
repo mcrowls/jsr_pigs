@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import scipy.optimize as opt
 import numpy as np
-import math
 
 def cos_x(x, a, b, d):
     return a*np.cos((b*x))+d
@@ -14,7 +13,7 @@ for j in range(1, 4):
         growth_rates.append(growth_rates[i])
 
 amplitude = (np.max(growth_rates)-np.min(growth_rates))/2
-initials = [amplitude, 2*math.pi/365, 2*amplitude]
+initials = [amplitude, 2*np.pi/365, 2*amplitude]
 print(initials)
 curve_fit = opt.curve_fit(cos_x, days_since_year, growth_rates, p0=initials)
 xs = np.linspace(np.min(days_since_year), np.max(days_since_year), 10000)

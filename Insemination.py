@@ -83,12 +83,12 @@ def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, WeightMean, WeightSD, BF_Mean, B
         DS[i, 1] = CalculateWeight(WeightMean, WeightSD)
         # Generate the back fat depth for each piglet
         DS[i, 2] = CalculateBackFat(BF_Mean, BF_SD)
-        # Generate the pregnancy period for each piglet
-        DS[i, 5] = PregnancyPeriod(PregMean, PregSD) + D
     # Assign farm
     DS[:, 3] = F
     # Assign day inseminated
     DS[:, 4] = D
+    # Generate the birthing date for the set of piglets
+    DS[:, 5] = PregnancyPeriod(PregMean, PregSD) + D
     # Assign Alive = True
     DS[:, 6] = 1
     # Assign sow number

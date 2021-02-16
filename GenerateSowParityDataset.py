@@ -1,6 +1,15 @@
 import numpy as np
 
+# File to initiate the sow dataset
 
+
+# Function to initiate the sow dataset
+# Takes:
+#   GenSP_EB - The list of numbers of each sow at each sow parity from InitVar for farm EB
+#   GenSP_HW - The list of numbers of each sow at each sow parity from InitVar for farm HW
+#   GenSP_SB - The list of numbers of each sow at each sow parity from InitVar for farm SB
+# Returns:
+#   SP - The dataset of sows
 def GenerateSowParityDataSet(GenSP_EB, GenSP_HW, GenSP_SB):
     # Find the number of Sows in each farm and total across all farms
     TotalSowsEB = sum(GenSP_EB)
@@ -35,14 +44,3 @@ def GenerateSowParityDataSet(GenSP_EB, GenSP_HW, GenSP_SB):
     SP[:, 3] = 1
 
     return SP
-
-
-'''
-# Input number of Sows of parity corresponding to index for each farm
-GenerateSP_EB = (3, 3, 3, 3, 3, 3, 3, 3, 3, 3)
-GenerateSP_HW = (3, 3, 3, 3, 3, 3, 3, 3, 3, 3)
-GenerateSP_SB = (3, 3, 3, 3, 3, 3, 3, 3, 3, 3)
-
-SP = GenerateSowParityDataSet(GenerateSP_EB, GenerateSP_HW, GenerateSP_SB)
-print(SP)
-'''

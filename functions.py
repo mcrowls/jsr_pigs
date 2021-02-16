@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import scipy.stats as sc
-from datetime import date
+from datetime import date, timedelta
 
 
 
@@ -92,16 +92,16 @@ def calc_days(date_array):
     days += date_array[0]
     return days
 
-def days_since_jan_01(weaning_date):
+def days_since_jan_01(weaning_date,wean_to_death):
     f_date = date(weaning_date[2], weaning_date[1], weaning_date[0])
+    date_wean = date(weaning_date[2], weaning_date[1], weaning_date[0]) - timedelta(days=wean_to_death)
+    mid_date = f_date + (f_date - date_wean)/2
     l_date = date(2014, 1, 1)
-    delta = l_date - f_date
+    delta = l_date - mid_date
     delt = delta.days
     if delt > 365 or delt < 365:
         delt = delt % 365
     return delt
-
-
 
 
 def remove_zeros(alive, array):

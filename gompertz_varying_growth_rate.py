@@ -35,14 +35,19 @@ mean_days_to_mid = sum(days_from_birth_to_mid)/len(days_from_birth_to_mid)
 xs = np.linspace(0,350, 10000)
 
 # T is different for every pig and is simply the date since they were born
+# find birth date, find death date then find date inbetween and use as growth rate
+# for lot of pigs [0]
 death_date = get_individual_date(dates[0])
-T = days_since_jan_01(death_date)
+T = days_since_jan_01(death_date,days_from_birth_to_death[0])
+
+
+# returns the parameters for function of birth rates
 a,b,d = find_growth_rates(cos_x)
 
 # shift is days taken to wean
 shift = 30
-
-y_logistic = logistic(xs,growth_rate(xs,T,a,b,d),shift)
+x = 0 
+y_logistic = logistic(xs,growth_rate(x,T,a,b,d),shift)
 
 plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning')
 plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')

@@ -3,11 +3,27 @@ Plots reduction from max value for pig against fat depth for different pigs, sho
 """
 from matplotlib import pyplot as plt
 import numpy as np
+import csv
 
 
 def pig_value(pigBackFatPenalty, pigWeight):
     return (150+pigBackFatPenalty)*pigWeight
 
+# import real data to plot also
+reader = np.loadtxt(open("weight_data.csv", "rb"), delimiter=",", skiprows=1)
+real_average_weights = reader[:, -3]
+real_p2_backfat_depth = reader[:, -1]
+print(real_p2_backfat_depth)
+for i in range(0, len(real_p2_backfat_depth)):
+    if real_p2_backfat_depth[i] < 10:
+        real_p2_backfat_depth[i] = 0
+    elif 10 <= real_p2_backfat_depth[i] < 12:
+        real_p2_backfat_depth[i] = 1
+    elif 12 <= real_p2_backfat_depth[i] < 14:
+        real_p2_backfat_depth[i] = 2
+    elif 14 <= real_p2_backfat_depth[i] < 16:
+        real_p2_backfat_depth[i] = 3
+print(real_p2_backfat_depth)
 
 fatDepths = ["<10", "10-12", "13-14", "15-16", "17-18", ">19"]
 
@@ -95,8 +111,8 @@ print(allValues.shape)
 
 fig, ax = plt.subplots()
 ax.imshow(allValues, cmap='hot', interpolation='nearest', aspect='auto')
-ax.set_xticklabels(fatDepths)
 ax.set(xlabel='Fat depth (mm)', ylabel='Weight of the pig', title='back fat depth against weight\n'
                                                                     'values on grid are values for pig')
+ax.scatter(real_p2_backfat_depth, real_average_weights)
 
 plt.show()

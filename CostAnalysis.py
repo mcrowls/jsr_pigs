@@ -2,6 +2,7 @@
 Plots reduction from max value for pig against fat depth for different pigs, shows previous selling data on top
 """
 from matplotlib import pyplot as plt
+import numpy as np
 
 
 def pig_value(pigBackFatPenalty, pigWeight):
@@ -30,7 +31,7 @@ ax.grid()
 
 plt.show()
 
-# now will plot pig actual values
+# now will plot the pig backfat depth against the pig weight
 
 idealWeights = [50, 65, 105]
 middleWeights = [45, 57.5, 85, 115] # takes mid values or +-10 if an edge case
@@ -48,7 +49,6 @@ for weight in plots:
     count += 1
 print(plots)
 
-
 fig, ax = plt.subplots()
 ax.plot(fatDepths, plots[0])
 ax.fill_between(fatDepths, plots[0])
@@ -63,5 +63,40 @@ ax.set(xlabel='fat depth (mm)', ylabel='Price for pig (based on current rates)',
        title='Value of pig against fat depth penalty\n'
              'at ideal weight value is max (top) of each region')
 ax.grid()
+
+plt.show()
+
+# now we'll plot a heatmap of pig weight against fat depth
+underFiftyKGs = [-25, -25, -25, -35, -45, -50]
+fiftyToSixtyFiveKGs = [-10, -10, -10, -20, -30, -35]
+sixtyFiveToHundredFiveKGs = [0, 0, 0, -10, -20, -25]
+aboveHundredFiveKGs = [0, 0, 0, 0, 0, 0]
+
+allWeights = range(0, 140)
+allValues = np.ndarray(shape=[140, 6])
+
+for i in range(0, len(allWeights)):
+    if 50 > allWeights[i]:
+        for j in range(0, len(underFiftyKGs)):
+            allValues[i][j] = pig_value(underFiftyKGs[j], allWeights[i])
+    elif 65 > allWeights[i] >= 50:
+        for j in range(0, len(fiftyToSixtyFiveKGs)):
+            allValues[i][j] = pig_value(fiftyToSixtyFiveKGs[j], allWeights[i])
+    elif 105 > allWeights[i] >= 65:
+        for j in range(0, len(sixtyFiveToHundredFiveKGs)):
+            allValues[i][j] = pig_value(sixtyFiveToHundredFiveKGs[j], allWeights[i])
+            print(allValues[i][j])
+    elif allWeights[i] >= 105:
+        for j in range(0, len(sixtyFiveToHundredFiveKGs)):
+            allValues[i][j] = 11000
+
+print(allValues)
+print(allValues.shape)
+
+fig, ax = plt.subplots()
+ax.imshow(allValues, cmap='hot', interpolation='nearest', aspect='auto')
+ax.set_xticklabels(fatDepths)
+ax.set(xlabel='Fat depth (mm)', ylabel='Weight of the pig', title='back fat depth against weight\n'
+                                                                    'values on grid are values for pig')
 
 plt.show()

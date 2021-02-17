@@ -163,7 +163,7 @@ def inverse_gombertz(starting_weight, target_weight, growth_rate):
 
 # Same as gombertz in terms of initial parameters but this model is actually a better fit for the data
 def logistic(x, growth_rate,shift):
-    y = 240 / (1 + shift * np.exp(-growth_rate * x))
+    y = 135 / (1 + shift * np.exp(-growth_rate * x))
     return y
 
 # Calculating the mean square error
@@ -176,7 +176,7 @@ def mean_squared_error_gombertz(x, y, growth_rate,shift):
 
 def mean_squared_error_logistic(x, y, growth_rate,shift):
     error = 0
-    for i in range(np.size(x)):
+    for i in range(np.shape(y)[0]):
         error += (logistic(x[i], growth_rate,shift) - y[i])**2
     return error
 
@@ -200,7 +200,7 @@ def minimise_error_logistic(x, y, growth_rate_array,shift):
         if mse < lowest_error:
             lowest_error = mse
             best_growth_rate = growth_rate
-    return lowest_error, best_growth_rate
+    return best_growth_rate
 
 
 def group_dates_together(csv):

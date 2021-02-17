@@ -68,10 +68,6 @@ for month in grouped_dates:
     #x_plot = np.linspace(0, 350, 10000)
     #y_plot = logistic(x_plot, growth_rate, shift)
 
-coeffs = coeffs_growth_rate(time_since_start_of_year, growth_rate_array)
-plot_x = np.linspace(np.min(time_since_start_of_year)-50, np.max(time_since_start_of_year)+50, 10000)
-plot_y = cos_x(plot_x, coeffs[0], coeffs[1], coeffs[2])
-plt.plot(plot_x, plot_y)
 
 plt.scatter(time_since_start_of_year, growth_rate_array)
 # plt.plot(x, y)

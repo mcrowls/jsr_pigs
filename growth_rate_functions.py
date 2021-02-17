@@ -14,7 +14,6 @@ def find_growth_rates(cos_x):
 
     amplitude = (np.max(growth_rates)-np.min(growth_rates))/2
     initials = [amplitude, 2*np.pi/365, 2*amplitude]
-    print(initials)
     curve_fit = opt.curve_fit(cos_x, days_since_year, growth_rates, p0=initials)
     xs = np.linspace(np.min(days_since_year), np.max(days_since_year), 10000)
     ys = cos_x(xs, curve_fit[0][0], curve_fit[0][1], curve_fit[0][2])

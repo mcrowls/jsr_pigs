@@ -163,7 +163,7 @@ def inverse_gombertz(starting_weight, target_weight, growth_rate):
 
 # Same as gombertz in terms of initial parameters but this model is actually a better fit for the data
 def logistic(x, growth_rate,shift):
-    y = 240 / (1 + shift * np.exp(-growth_rate * x))
+    y = 135 / (1 + shift * np.exp(-growth_rate * x))
     return y
 
 # Calculating the mean square error

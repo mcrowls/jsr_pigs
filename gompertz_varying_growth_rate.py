@@ -37,22 +37,31 @@ xs = np.linspace(0,350, 10000)
 # T is different for every pig and is simply the date since they were born
 # find birth date, find death date then find date inbetween and use as growth rate
 # for lot of pigs [0]
-death_date = get_individual_date(dates[0])
-T = days_since_jan_01(death_date,days_from_birth_to_death[0])
+death_date = get_individual_date(dates[5])
+T = days_since_jan_01(death_date,days_from_birth_to_death[5])
 
 
 # returns the parameters for function of birth rates
 a,b,d = find_growth_rates(cos_x)
 
+xi = np.linspace(0,1000, 10000)
+print(growth_rate(xi,0,a,b,d))
+max_growth_rate = max(growth_rate(xi,0,a,b,d))
+min_growth_rate = min(growth_rate(xi,0,a,b,d))
+
 # shift is days taken to wean
 shift = 30
-x = 0 
+x = 0
 y_logistic = logistic(xs,growth_rate(x,T,a,b,d),shift)
+y_logistic_max = logistic(xs,max_growth_rate,shift)
+y_logistic_min = logistic(xs,min_growth_rate,shift)
 
 plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning')
 plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')
 plt.scatter(days_from_birth_to_death, weight_out, label='selling')
 plt.plot(xs, y_logistic, label='logistic model',color="orange")
+plt.plot(xs, y_logistic_max, label='logistic model max growth rate',color="blue")
+plt.plot(xs, y_logistic_min, label='logistic model min growth rate',color="red")
 
 plt.xlabel('days since birth')
 plt.ylabel('weight (kg)')

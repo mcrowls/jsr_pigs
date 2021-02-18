@@ -12,7 +12,7 @@ grouped_dates = group_dates_together(weight_csv)
 growth_rate_array = []
 time_since_start_of_year = []
 
-for month in [grouped_dates[0], grouped_dates[1], grouped_dates[2]]:
+for month in grouped_dates:
     dates = []
     days_post = []
     days_in = []
@@ -70,8 +70,8 @@ for month in [grouped_dates[0], grouped_dates[1], grouped_dates[2]]:
     plt.scatter(days, weights, label='gr = '+str(growth_rate)[0:6])
     plt.plot(x_plot, y_plot)
 
-    [bar.set_alpha(0.05) for bar in bars]
-    [cap.set_alpha(0.05) for cap in caps]
+    [bar.set_alpha(0.02) for bar in bars]
+    [cap.set_alpha(0.02) for cap in caps]
 
 #plt.scatter(all_days, all_weights)
 # plt.plot(x, y)

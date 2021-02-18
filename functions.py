@@ -151,7 +151,7 @@ def growth_rate(x,T,a,b,d):
 
 # Can vary the growth rate but the shift and the max weight are fixed.
 def gombertz(x, growth_rate,shift):
-    y = 135 * np.exp(-shift * np.exp(-growth_rate * x)) # x in any of these equations will be the time 't'
+    y = 240 * np.exp(-shift * np.exp(-growth_rate * x)) # x in any of these equations will be the time 't'
     return y
 
 
@@ -163,13 +163,13 @@ def inverse_gombertz(starting_weight, target_weight, growth_rate):
 
 # Same as gombertz in terms of initial parameters but this model is actually a better fit for the data
 def logistic(x, growth_rate,shift):
-    y = 135 / (1 + shift * np.exp(-growth_rate * x))
+    y = 240 / (1 + shift * np.exp(-growth_rate * x))
     return y
 
 # Calculating the mean square error
 def mean_squared_error_gombertz(x, y, growth_rate,shift):
     error = 0
-    for i in range(np.size(x)):
+    for i in range(np.shape(y)[0]):
         error += (gombertz(x[i], growth_rate,shift) - y[i])**2
     return error
 
@@ -178,7 +178,7 @@ def mean_squared_error_logistic(x, y, growth_rate,shift):
     error = 0
     for i in range(np.shape(y)[0]):
         error += (logistic(x[i], growth_rate,shift) - y[i])**2
-    return error
+    return (error)**0.5/np.shape(y)[0]
 
 #Picks the growth rate with the lowest error. X and Y in this case will be dates and weights
 def minimise_error_gombertz(x, y, growth_rate_array,shift):
@@ -189,7 +189,7 @@ def minimise_error_gombertz(x, y, growth_rate_array,shift):
         if mse < lowest_error:
             lowest_error = mse
             best_growth_rate = growth_rate
-    return lowest_error, best_growth_rate
+    return best_growth_rate
 
 # does the same thing
 def minimise_error_logistic(x, y, growth_rate_array,shift):
@@ -200,7 +200,7 @@ def minimise_error_logistic(x, y, growth_rate_array,shift):
         if mse < lowest_error:
             lowest_error = mse
             best_growth_rate = growth_rate
-    return best_growth_rate
+    return mse, best_growth_rate
 
 
 def group_dates_together(csv):

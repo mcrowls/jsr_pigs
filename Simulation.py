@@ -31,3 +31,7 @@ while Day <= SimVar.SimRunTime:
                                                                      SowDF, InitiatedPigletDataset, PigletDF)
     Day += 1
 
+# # extract piglet data for testing and building selling/slaughter policy program
+# print(type(PigletDF))
+# np.savetxt("PigletDF.csv", PigletDF, delimiter=",")
+

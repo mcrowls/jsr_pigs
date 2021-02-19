@@ -9,7 +9,7 @@ import numpy as np
 # Returns:
 #   Weight - The updated weight of the piglet
 def UpdateWeights(Weight):
-    Weight = Weight * 1.1
+    Weight = Weight + 5/6
     return Weight
 
 

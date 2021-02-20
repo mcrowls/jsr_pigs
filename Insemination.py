@@ -22,9 +22,15 @@ def Int_Distribution(Sigma, Mu):
 #   Mu -  The standard deviation of the normal distribution
 # Returns:
 #   Value - The randomly chosen value
-def CalculateWeight(Sigma, Mu):
-    Value = np.random.normal(Sigma, Mu)
-    return Value
+def CalculateWeight(t, growth_rate):
+    y = 240 / (1 + 30 * np.exp(-growth_rate * t))
+    return y
+
+
+def get_growth_rate_for_pig():
+    mean = 0.018460179351268462
+    var = 9.078204438994627e-08
+    return np.random.normal(mean, var, 1)
 
 
 # Function to determine the depth of back fat of a new born piglet

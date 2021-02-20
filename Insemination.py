@@ -44,8 +44,8 @@ def get_growth_rate_for_pig():
 #   Mu -  The standard deviation of the normal distribution
 # Returns:
 #   Value - The randomly chosen value
-def CalculateBackFat(Sigma, Mu):
-    Value = np.random.normal(Sigma, Mu)
+def CalculateBackFat(weight):
+    fat = 1.0364296522510674 + weight*0.08841889413839167
     return Value
 
 

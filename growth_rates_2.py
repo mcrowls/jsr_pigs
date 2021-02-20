@@ -3,6 +3,8 @@ from growth_model_with_varying_rates import *
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import math
+import scipy.stats as stats
 
 
 weight_csv = pd.read_csv('Weight_Data.csv')
@@ -66,15 +68,34 @@ for month in grouped_dates:
     growth_rate_array.append(growth_rate)
     x_plot = np.linspace(0, 350, 1000)
     y_plot = logistic(x_plot, growth_rate, shift)
-    markers, caps, bars = plt.errorbar(x_plot, y_plot, xerr=None, yerr=rmse, ecolor=None)
-    plt.scatter(days, weights, label='gr = '+str(growth_rate)[0:6])
-    plt.plot(x_plot, y_plot)
+    #markers, caps, bars = plt.errorbar(x_plot, y_plot, xerr=None, yerr=rmse, ecolor=None)
+    #plt.scatter(days, weights, label='gr = '+str(growth_rate)[0:6])
+    #plt.plot(x_plot, y_plot)
 
-    [bar.set_alpha(0.02) for bar in bars]
-    [cap.set_alpha(0.02) for cap in caps]
+    #[bar.set_alpha(0.02) for bar in bars]
+    #[cap.set_alpha(0.02) for cap in caps]
 
+
+mean = np.mean(growth_rate_array)
+var = np.var(growth_rate_array)
+sigma = math.sqrt(var)
+x = np.linspace(mean - 4*sigma, mean + 4*sigma, 1000)
+y = stats.norm.pdf(x, mean, sigma)
+print(y)
+mean_xs = [mean, mean]
+mean_ys = [0, np.max(y)]
+plt.plot(x, y, label='Normal Distribution')
+plt.plot(mean_xs, mean_ys, label='Mean')
+plt.legend(loc='best')
 #plt.scatter(all_days, all_weights)
 # plt.plot(x, y)
+'''
 plt.ylim(0, 240)
 plt.legend(loc='best')
+plt.xlabel('Days of growth')
+plt.ylabel('Weight(kg)')
+'''
+plt.ylim(0, 1500)
+plt.xlabel('growth rate (a.u)')
+plt.ylabel('frequency')
 plt.show()

@@ -78,6 +78,8 @@ for month in grouped_dates:
 
 mean = np.mean(growth_rate_array)
 var = np.var(growth_rate_array)
+print(mean)
+print(var)
 sigma = math.sqrt(var)
 x = np.linspace(mean - 4*sigma, mean + 4*sigma, 1000)
 y = stats.norm.pdf(x, mean, sigma)

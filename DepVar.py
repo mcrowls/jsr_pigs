@@ -14,5 +14,5 @@ BackFatBA_Mean = 2
 BackFatBA_SD = 0.2
 
 # Variable used to calculate the pregnancy period for each sow
-PregPeriodMean = 80
-PregPeriodSD = 5
+PregPeriodMean = 114.605
+PregPeriodSD = 1.572

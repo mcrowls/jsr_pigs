@@ -23,7 +23,6 @@ def Int_Distribution(Sigma, Mu):
 # Returns:
 #   Value - The randomly chosen value
 def CalculateWeight(t, growth_rate):
-<<<<<<< Updated upstream
     y = 240 / (1 + 30 * np.exp(-growth_rate * t))
     return y
 
@@ -32,10 +31,6 @@ def get_growth_rate_for_pig():
     mean = 0.018460179351268462
     var = 9.078204438994627e-08
     return np.random.normal(mean, var, 1)
-=======
-    Value = np.random.normal(Sigma, Mu)
-    return Value
->>>>>>> Stashed changes
 
 
 # Function to determine the depth of back fat of a new born piglet

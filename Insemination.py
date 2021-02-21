@@ -55,17 +55,22 @@ def CalculateBackFat(weight):
 #   F - The Farm the piglet is birthed onto
 #   SP_Mean - The list of mean piglets born alive depending on sow parity
 #   SP_SD - The list of standard deviations of piglets born alive depending on sow parity
+#   WeightMean - The mean weight of piglets born alive
+#   WeightSD - The standard deviation of weights of piglets born alive
+#   BF_Mean - The mean depth of back far of piglets born alive
+#   BF_SD - The standard deviation of depths of back far of piglets born alive
 #   PregMean - The mean length of pregnancy for sows
 #   PregSD - The standard deviation of pregnancy periods
 #   DF - The already existing dataset of piglets (If none a dummy is passed)
 #   DF_Set - A True/False variable saying whether there is already a dataset of piglets
+#   earnings - the value of the pig when sold (set to None here)
 # Returns:
 #   DS - The dataset of piglets
 def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, PregMean, PregSD, DF, DF_Set):
     # Calculate the number of piglets the sow has birthed
     BA = Int_Distribution(SP_Mean[SP], SP_SD[SP])
     # Initiate dataset
-    DS = np.zeros((BA, 11))
+    DS = np.zeros((BA, 12))
     # Generate piglet number
     if not DF_Set:
         DS[:, 0] = np.linspace(1, BA, BA)
@@ -92,6 +97,8 @@ def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, PregMean, PregSD, DF, DF_Set):
     DS[:, 8] = SP
     # Assign initial age (0 as not born)
     DS[:, 9] = 0
+    # Assign earning value
+    DS[:, 11] = None
     return DS
 
 

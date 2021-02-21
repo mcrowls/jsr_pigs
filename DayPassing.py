@@ -1,16 +1,7 @@
 import numpy as np
+from Insemination import *
 
 # File that updates all datasets for the passing of one day
-
-
-# Function to update the weight of a piglet in the piglet dataset
-# Takes:
-#   Weight - The weight of the piglet
-# Returns:
-#   Weight - The updated weight of the piglet
-def UpdateWeights(Weight):
-    Weight = Weight + 5/6
-    return Weight
 
 
 # Function to update the back fat of a piglet in the piglet dataset
@@ -18,8 +9,8 @@ def UpdateWeights(Weight):
 #   BF - The depth of back fat of the piglet
 # Returns:
 #   BF - The updated depth of back fat of the piglet
-def UpdateBackFat(BF):
-    BF = BF * 1.1
+def UpdateBackFat(weight):
+    BF = 1.0364296522510674 + weight*0.08841889413839167
     return BF
 
 
@@ -31,10 +22,10 @@ def UpdateBackFat(BF):
 #   DS - The updated dataset of piglets
 def DayUpdatePiglets(DS, D):
     for i in range(0, len(DS)):
-        # Update weight
-        DS[i, 1] = UpdateWeights(DS[i, 1])
-        # Update back fat
-        DS[i, 2] = UpdateBackFat(DS[i, 2])
+        # Update weight using time (D) and growth rate for pig DS[i, 10]
+        DS[i, 1] = CalculateWeight(D, DS[i, 10])
+        # Update back fat using weight since backfat is assumed to be directly proportional to weight 
+        DS[i, 2] = UpdateBackFat(DS[i, 1])
         # Update age if alive and born
         if DS[i, 6] == 1 and DS[i, 5] <= D:
             DS[i, 9] += 1

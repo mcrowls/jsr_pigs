@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 # File to update the sow and piglet dataset after an insemination event
 
@@ -33,7 +34,7 @@ def CalculateWeight(t, growth_rate):
 def GenerateGrowthRate():
     mean = 0.018460179351268462
     var = 9.078204438994627e-08
-    GrowthRate = np.random.normal(mean, var, 1)
+    GrowthRate = np.random.normal(mean, math.sqrt(var), 1)
     return GrowthRate
 
 

@@ -39,6 +39,10 @@ def return_pig_value(day, df_as_numpy, numSold):
     df_as_numpy = source_df.iloc[numSold:]
     df_as_numpy = df_as_numpy.to_numpy()
 
+    # convert to deadweights (and save live weight as well)
+    df["liveWeight"] = df["weight"]
+    df["weight"] = df["weight"] * 0.754
+
     print("length of df: {}".format(len(df)))
     print("length of df_as_numpy: {}".format(len(df_as_numpy)))
 

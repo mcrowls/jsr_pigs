@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import math
 
 
 # Function to find the total number born alive and the total number of births at each sow parity
@@ -11,13 +12,15 @@ import matplotlib.pyplot as plt
 # Returns:
 #   NumberBornAlive - A list of total number born alive for each sow parity where index corresponds to sow parity
 #   SowParityCount - A list of the number of births at each sow parity where index corresponds to sow parity
-def FarmBornAlive(LowerRange, UpperRange, df, MaxSP):
+def FarmBornAlive(LowerRange, UpperRange, df, MaxSP, Sigma):
     NumbersBornAlive = [0] * (MaxSP + 1)
+    Var = [0] * (MaxSP + 1)
     SowParityCount = [0] * (MaxSP + 1)
     for i in range(LowerRange, UpperRange):
         NumbersBornAlive[df["Sow Parity"][i]] += df["Numbers Born Alive"][i]
+        Var[df["Sow Parity"][i]] += (df["Numbers Born Alive"][i] - Sigma[df["Sow Parity"][i]]) ** 2
         SowParityCount[df["Sow Parity"][i]] += 1
-    return NumbersBornAlive, SowParityCount
+    return NumbersBornAlive, SowParityCount, Var
 
 
 # Function to find the average number born alive at each sow parity
@@ -30,7 +33,7 @@ def FarmBornAlive(LowerRange, UpperRange, df, MaxSP):
 # the sow parity
 def Average(MaxSP, NumberBornAlive, SowParityCount):
     AvgNumbersBornAlive = [0] * (MaxSP + 1)
-    for i in range(0, MaxSP):
+    for i in range(0, MaxSP + 1):
         if SowParityCount[i] != 0:
             AvgNumbersBornAlive[i] = NumberBornAlive[i] / SowParityCount[i]
     return AvgNumbersBornAlive
@@ -51,7 +54,7 @@ def Average(MaxSP, NumberBornAlive, SowParityCount):
 def SumFarms(EBNumberBA, EBSowPC, HWNumbersBA, HWSowPC, SBNumbersBA, SBSowPC, MaxSP):
     AllFarmsNBA = [0] * (MaxSP + 1)
     AllFarmsSPC = [0] * (MaxSP + 1)
-    for i in range(0, MaxSP):
+    for i in range(0, MaxSP + 1):
         AllFarmsNBA[i] = EBNumberBA[i] + HWNumbersBA[i] + SBNumbersBA[i]
         AllFarmsSPC[i] = EBSowPC[i] + HWSowPC[i] + SBSowPC[i]
     return AllFarmsNBA, AllFarmsSPC
@@ -72,6 +75,10 @@ def RemoveZeros(y):
     return x, y
 
 
+# Set Mean list
+Mean = [0, 14.703974417542257, 15.12241054613936, 16.40301724137931, 16.192748091603054, 16.161290322580644,
+        15.709515859766277, 14.680203045685278, 14.026178010471204, 13.8, 12.25, 0, 12.5, 11.5, 12]
+
 # Reads data from csv into pandas and selects useful columns: Farm, Sow Parity, Numbers Born Alive
 Data = pd.read_csv("Farrowing Data.csv")
 Data = Data[["Farm", "Sow Parity", "Numbers Born Alive"]].copy()
@@ -90,9 +97,21 @@ MaxSowParity = max(Data["Sow Parity"])
 # The total number of pigs born from each sow parity returned as a list where the index corresponds to the sow parity
 # The total number of times a sow of a each sow parity gave birth returned as a list where the index corresponds to
 # the sow parity
-EBNumbersBornAlive, EBSowParityCount = FarmBornAlive(0, 1736, Data, MaxSowParity)
-HWNumbersBornAlive, HWSowParityCount = FarmBornAlive(2526, 6729, Data, MaxSowParity)
-SBNumbersBornAlive, SBSowParityCount = FarmBornAlive(9139, 10490, Data, MaxSowParity)
+EBNumbersBornAlive, EBSowParityCount, EB_Var = FarmBornAlive(0, 1736, Data, MaxSowParity, Mean)
+HWNumbersBornAlive, HWSowParityCount, HW_Var = FarmBornAlive(2526, 6729, Data, MaxSowParity, Mean)
+SBNumbersBornAlive, SBSowParityCount, SB_Var = FarmBornAlive(9139, 10490, Data, MaxSowParity, Mean)
+
+SD = [0] * len(EB_Var)
+Var = [0] * len(EB_Var)
+SowParityCount = [0] * len(EBSowParityCount)
+for i in range(0, len(EB_Var)):
+    Var[i] = EB_Var[i] + HW_Var[i] + SB_Var[i]
+    SowParityCount[i] = EBSowParityCount[i] + HWSowParityCount[i] + SBSowParityCount[i]
+    if SowParityCount[i] != 0:
+        SD[i] = math.sqrt(Var[i] / SowParityCount[i])
+
+#print(SowParityCount)
+#print(SD)
 
 # Uncomment to print the lists returned for each farm
 '''
@@ -111,11 +130,11 @@ HWAvgNumbersBornAlive = Average(MaxSowParity, HWNumbersBornAlive, HWSowParityCou
 SBAvgNumbersBornAlive = Average(MaxSowParity, SBNumbersBornAlive, SBSowParityCount)
 
 # Uncomment to print the lists returned for each farm
-'''
+
 print(EBAvgNumbersBornAlive, '\n')
 print(HWAvgNumbersBornAlive, '\n')
 print(SBAvgNumbersBornAlive, '\n')
-'''
+
 
 # Runs function to find:
 # the total number of pigs born alive across all farms as a list where the index corresponds to the sow parity.
@@ -135,9 +154,9 @@ print(AllSowParityCount, '\n')
 AllAvgNumberBornAlive = Average(MaxSowParity, AllNumbersBornAlive, AllSowParityCount)
 
 # Uncomment to print the lists returned
-'''
-print(AllAvgNumberBornAlive, '\n')
-'''
+
+#print(AllAvgNumberBornAlive, '\n')
+
 
 # Runs a function to remove instances where there are no cases of birth of a pig at a certain sow parity returned as
 # a list of average number of pigs born alive and corresponding sow parities
@@ -145,7 +164,9 @@ x1, y1 = RemoveZeros(AllAvgNumberBornAlive)
 x2, y2 = RemoveZeros(EBAvgNumbersBornAlive)
 x3, y3 = RemoveZeros(HWAvgNumbersBornAlive)
 x4, y4 = RemoveZeros(SBAvgNumbersBornAlive)
+x5, y5 = RemoveZeros(SD)
 
+'''
 # Plots a graph of of average number of piglets born alive against sow parity for all farms
 plt.figure(1)
 plt.rc('axes', labelsize=12)
@@ -155,7 +176,8 @@ plt.xlabel('Sow parity')
 plt.xlim(0, MaxSowParity + 1)
 plt.ylim(10, 18)
 plt.title('Line graph to show how sow parity affects the live litter size')
-
+'''
+'''
 # Plots a graph of of average number of piglets born alive against sow parity for all farms and for the 3 individual
 # farms
 plt.figure(2)
@@ -171,5 +193,15 @@ plt.xlim(0, MaxSowParity + 1)
 plt.ylim(10, 18)
 plt.legend()
 plt.title('Line graph to show how sow parity affects the live \n litter size across various farms')
+'''
+
+plt.figure(3)
+plt.plot(x1, y1, 'rx', x1, y1, 'r')
+plt.plot(x5, y5, 'bx', x5, y5, 'b')
+plt.ylabel('Number born alive')
+plt.xlabel('Sow parity')
+plt.xlim(0, MaxSowParity + 1)
+plt.ylim(0, 18)
+plt.title('Line graph to show how sow parity affects the live litter size')
 
 plt.show()

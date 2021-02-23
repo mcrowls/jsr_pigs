@@ -1,46 +1,62 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
-SoldPigsDF = pd.read_csv('SoldPigsDF.csv')
-SoldPigsDF["Price Per KG"] = (SoldPigsDF["earning"]/SoldPigsDF["weight"]).round()
+# Create lists to eventually add to a pandas dataframe
+run_num = []
+total_sold = []
+over = []
+opt = []
+p10 = []
+p20 = []
+p25 = []
+p30 = []
+p35 = []
+p45 = []
+p50 = []
 
-# Overweight Pigs
-pigs_over = SoldPigsDF.loc[SoldPigsDF['weight'] > 105]
+# Number of times to run the simulation
+n_runs = 2
 
-# Optimal Pigs - those which are sold for 150p/kg
-pigs_opt = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 150) & (SoldPigsDF['weight'] <= 105)]
+# run the simulation n_runs times
+for run in range(1,n_runs+1):
+    run_num.append(run)
 
-# Penalties, given by number at end
-pigs_10 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 140) & (SoldPigsDF['weight'] <= 105)]
-pigs_20 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 130) & (SoldPigsDF['weight'] <= 105)]
-pigs_25 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 125) & (SoldPigsDF['weight'] <= 105)]
-pigs_30 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 120) & (SoldPigsDF['weight'] <= 105)]
-pigs_35 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 115) & (SoldPigsDF['weight'] <= 105)]
-pigs_45 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 105) & (SoldPigsDF['weight'] <= 105)]
-pigs_50 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 100) & (SoldPigsDF['weight'] <= 105)]
+    # runs the simulation
+    os.system('python Simulation.py')
 
-# Print the numbers and percentages of pigs in each penalty group
-print(f"Total number of pigs = {len(SoldPigsDF)}")
+    # reads the data produced in the simulation
+    SoldPigsDF = pd.read_csv('SoldPigsDF.csv')
+    SoldPigsDF["Price Per KG"] = (SoldPigsDF["earning"] / SoldPigsDF["weight"]).round()
 
-print("Number of pigs sold...")
-print(f"    overweight (£110 fixed) = {len(pigs_over)}")
-print(f"    optimal (no penalty)    = {len(pigs_opt)}")
-print(f"    -10p/kg penalty         = {len(pigs_10)}")
-print(f"    -20p/kg penalty         = {len(pigs_20)}")
-print(f"    -25p/kg penalty         = {len(pigs_25)}")
-print(f"    -30p/kg penalty         = {len(pigs_30)}")
-print(f"    -35p/kg penalty         = {len(pigs_35)}")
-print(f"    -45p/kg penalty         = {len(pigs_45)}")
-print(f"    -50p/kg penalty         = {len(pigs_50)}")
+    # Overweight Pigs
+    pigs_over = SoldPigsDF.loc[SoldPigsDF['weight'] > 105]
 
-print("Percentage of pigs sold...")
-print(f"    overweight (£110 fixed) = {100*len(pigs_over)/len(SoldPigsDF)}%")
-print(f"    optimal (no penalty)    = {100*len(pigs_opt)/len(SoldPigsDF)}%")
-print(f"    -10p/kg penalty         = {100*len(pigs_10)/len(SoldPigsDF)}%")
-print(f"    -20p/kg penalty         = {100*len(pigs_20)/len(SoldPigsDF)}%")
-print(f"    -25p/kg penalty         = {100*len(pigs_25)/len(SoldPigsDF)}%")
-print(f"    -30p/kg penalty         = {100*len(pigs_30)/len(SoldPigsDF)}%")
-print(f"    -35p/kg penalty         = {100*len(pigs_35)/len(SoldPigsDF)}%")
-print(f"    -45p/kg penalty         = {100*len(pigs_45)/len(SoldPigsDF)}%")
-print(f"    -50p/kg penalty         = {100*len(pigs_50)/len(SoldPigsDF)}%")
+    # Optimal Pigs - those which are sold for 150p/kg
+    pigs_opt = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 150) & (SoldPigsDF['weight'] <= 105)]
+
+    # Penalties, given by number at end
+    pigs_10 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 140) & (SoldPigsDF['weight'] <= 105)]
+    pigs_20 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 130) & (SoldPigsDF['weight'] <= 105)]
+    pigs_25 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 125) & (SoldPigsDF['weight'] <= 105)]
+    pigs_30 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 120) & (SoldPigsDF['weight'] <= 105)]
+    pigs_35 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 115) & (SoldPigsDF['weight'] <= 105)]
+    pigs_45 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 105) & (SoldPigsDF['weight'] <= 105)]
+    pigs_50 = SoldPigsDF.loc[(SoldPigsDF['Price Per KG'] == 100) & (SoldPigsDF['weight'] <= 105)]
+
+    # Add the numbers of pigs in each penalty group to the relevant lists
+    total_sold.append(len(SoldPigsDF))
+    over.append(len(pigs_over))
+    opt.append(len(pigs_opt))
+    p10.append(len(pigs_10))
+    p20.append(len(pigs_20))
+    p25.append(len(pigs_25))
+    p30.append(len(pigs_30))
+    p35.append(len(pigs_35))
+    p45.append(len(pigs_45))
+    p50.append(len(pigs_50))
+
+# Make a Pandas dataframe with the data, save to csv
+resultsDF = pd.DataFrame({'Run': run_num, 'Total Pigs Sold': total_sold, 'Overweight': over, 'No Penalty': opt, '-10p/kg': p10, '-20p/kg': p20, '-25p/kg': p25, '-30p/kg': p30, '-35p/kg': p35, '-45p/kg': p45, '-50p/kg': p50})
+resultsDF.to_csv("ResultsDF.csv")

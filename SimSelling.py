@@ -62,6 +62,9 @@ def return_pig_value(day, df_as_numpy, numSold):
     # calculate max profit
     earnings = sum(df["earning"])
 
+    # add date of slaughter column
+    df["dateKilled"] = day
+
     return df_as_numpy, df, earnings
 
 

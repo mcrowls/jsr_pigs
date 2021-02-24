@@ -64,10 +64,10 @@ for month in grouped_dates:
     for i in range(np.shape(month)[0]):
         xs.extend((30, days_from_birth_to_mid[i], days_from_birth_to_death[i]))
         ys.extend((7, ave_weight[i], weight_out[i]))
-    rmse, growth_rate = minimise_error_logistic(xs, ys, growth_rates, shift)
+    rmse, growth_rate = minimise_error_gombertz(xs, ys, growth_rates, shift)
     growth_rate_array.append(growth_rate)
     x_plot = np.linspace(0, 350, 1000)
-    y_plot = logistic(x_plot, growth_rate, shift)
+    y_plot = gombertz(x_plot, growth_rate, shift)
     #markers, caps, bars = plt.errorbar(x_plot, y_plot, xerr=None, yerr=rmse, ecolor=None)
     #plt.scatter(days, weights, label='gr = '+str(growth_rate)[0:6])
     #plt.plot(x_plot, y_plot)

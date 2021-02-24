@@ -70,7 +70,7 @@ def get_dates(dates):
                 if str(months[i]) == split_date[1]:
                     month = i + 1
                     date_array.append(month)
-            year = int(split_date[2])
+            year = int(split_date[2])+2000
             date_array.append(year)
             numbered_dates.append(date_array)
     return numbered_dates
@@ -189,7 +189,7 @@ def minimise_error_gombertz(x, y, growth_rate_array,shift):
         if mse < lowest_error:
             lowest_error = mse
             best_growth_rate = growth_rate
-    return best_growth_rate
+    return mse, best_growth_rate
 
 # does the same thing
 def minimise_error_logistic(x, y, growth_rate_array,shift):

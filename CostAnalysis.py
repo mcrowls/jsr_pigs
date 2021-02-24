@@ -4,7 +4,7 @@ Plots reduction from max value for pig against fat depth for different pigs, sho
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
-import csv
+import SimVar
 
 
 def pig_value(pigBackFatPenalty, pigWeight):
@@ -107,9 +107,31 @@ for i in range(0, len(allWeights)):
             allValues[i][j] = 11000
 
 # bring in simulated and real data to plot on heatmap
-readerReal = np.loadtxt(open(r"C:\Users\charl\GitHub\jsr_pigs\simulation_data\real_sale_data-11-03-2020-weaned.csv", "rb"), delimiter=",", skiprows=1)
+readerReal = np.loadtxt(open(r"C:\Users\charl\GitHub\jsr_pigs\simulation_data\real_sale_data-01-01-2020-weaned.csv", "rb"), delimiter=",", skiprows=1)
 real_average_weights = readerReal[:, 4]
 real_p2_backfat_depth = readerReal[:, 5]
+
+
+sim_df = pd.read_csv(u"simulation_data\SoldPigsDF-01-01-2020-weaned.csv")
+sim_average_weights = []
+sim_p2_backfat_depth = []
+# find average weights for each date of slaughter
+dates_and_numbers = SimVar.SellingPolicy
+dates_killed = []
+for data in dates_and_numbers[:-1]:
+    dates_killed.append(data[0])
+
+for day in dates_killed:
+    tempDF = sim_df[sim_df["dateKilled"] == day]
+    sim_average_weights.append(np.mean(tempDF["weight"]))
+    sim_p2_backfat_depth.append(np.mean(tempDF["backFat"]))
+
+fig, ax = plt.subplots()
+ax.scatter(real_p2_backfat_depth, real_average_weights)
+ax.scatter(sim_p2_backfat_depth, sim_average_weights)
+ax.set(xlabel='Fat depth (mm)', ylabel='Weight of the pig', title='back fat depth against weight')
+ax.legend(['Real', 'Simulated'])
+plt.show()
 
 # find category for real backfat
 for i in range(0, len(real_p2_backfat_depth)):
@@ -121,16 +143,6 @@ for i in range(0, len(real_p2_backfat_depth)):
         real_p2_backfat_depth[i] = 2
     elif 14 <= real_p2_backfat_depth[i] < 16:
         real_p2_backfat_depth[i] = 3
-
-sim_df = pd.read_csv(u"simulation_data\SoldPigsDF-11-03-2020-weaned.csv")
-sim_average_weights = []
-sim_p2_backfat_depth = []
-# find average weights for each date of slaughter
-dates_killed = [157, 167, 170, 173, 180, 181, 184, 187]
-for day in dates_killed:
-    tempDF = sim_df[sim_df["dateKilled"] == day]
-    sim_average_weights.append(np.mean(tempDF["weight"]))
-    sim_p2_backfat_depth.append(np.mean(tempDF["backFat"]))
 
 # find category for simulated backfat
 for i in range(0, len(sim_p2_backfat_depth)):
@@ -150,8 +162,8 @@ print("sim_p2_backfat_depth: {}".format(sim_p2_backfat_depth))
 
 fig, ax = plt.subplots()
 ax.imshow(allValues, cmap='hot', interpolation='nearest', aspect='auto')
-ax.set(xlabel='Fat depth (mm)', ylabel='Weight of the pig', title='back fat depth against weight for weaned 11 march pigs\n'
-                                                                    'heatmap is income for pig (max £155)')
+ax.set(xlabel='Fat depth (mm)', ylabel='Weight of the pig',
+       title='back fat depth against weight for weaned 1st jan pigs\n''heatmap is income for pig (max £155)')
 ax.scatter(real_p2_backfat_depth, real_average_weights, c='green')
 ax.scatter(sim_p2_backfat_depth, sim_average_weights, c='purple')
 

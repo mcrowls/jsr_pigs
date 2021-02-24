@@ -32,7 +32,8 @@ def CalculateWeight(t, growth_rate):
 # Returns:
 #   GrowthRate - The growth rate of the pig
 def GenerateGrowthRate():
-    mean = 0.018460179351268462
+    # mean = 0.018460179351268462
+    mean = 0.02
     var = 9.078204438994627e-08
     GrowthRate = np.random.normal(mean, math.sqrt(var), 1)
     return GrowthRate

@@ -42,5 +42,5 @@ while Day <= SimVar.SimRunTime:
     Day += 1
 
 # # extract piglet data for testing and building selling/slaughter policy program
-SoldPigsDF.to_csv("SoldPigsDF-11-03-2020-weaned.csv")
+SoldPigsDF.to_csv("SoldPigsDF-01-01-2020-weaned.csv")
 print("Total earnings: {}".format(totalEarnings))

@@ -22,8 +22,17 @@ def Int_Distribution(Sigma, Mu):
 #   growth_rate - the growth rate of the piglet
 # Returns:
 #   y - the updated weight of the pig
-def CalculateWeight(t, growth_rate):
+
+
+''' Now two functions separate for gompertz and logistic. Make sure that this
+corresponds to the right mean and variance when you implement'''
+def CalculateWeightLogistic(t, growth_rate):
     y = 240 / (1 + 30 * np.exp(-growth_rate * t))
+    return y
+
+
+def CalculateWeightGompertz(t, growth_rate):
+    y = 240 * np.exp(-30*np.exp(-growth_rate*t))
     return y
 
 
@@ -31,10 +40,10 @@ def CalculateWeight(t, growth_rate):
 # Takes:
 # Returns:
 #   GrowthRate - The growth rate of the pig
-def GenerateGrowthRate():
-    mean = 0.018460179351268462
-    var = 9.078204438994627e-08
-    GrowthRate = np.random.normal(mean, math.sqrt(var), 1)
+
+#Generates growth_rate based on a certain mean and variance
+def GenerateGrowthRate(mean_and_variance):
+    GrowthRate = np.random.normal(mean_and_variance[0], math.sqrt(mean_and_variance[1]), 1)
     return GrowthRate
 
 
@@ -67,6 +76,13 @@ def CalculateBackFat(weight):
 #   earnings - the value of the pig when sold (set to None here)
 # Returns:
 #   DS - The dataset of piglets
+
+# Mean and variance, mean takes position 0 and variance takes 1 in these arrays
+growth_rate_logistic_model_1 = [0.018460179351268462, 9.078204438994627e-08]
+growth_rate_logistic_model_2 = [0.02387738773877388, 2.910790462317891e-06]
+growth_rate_gompertz_model_1 = [0.0209020902090209, 1.1335600340045393e-07]
+growth_rate_gompertz_model_2 = [0.026602660266026604, 3.3640061009134556e-06]
+
 def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, PregMean, PregSD, DF, DF_Set):
     # Calculate the number of piglets the sow has birthed
     BA = Int_Distribution(SP_Mean[SP], SP_SD[SP])
@@ -79,9 +95,9 @@ def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, PregMean, PregSD, DF, DF_Set):
         DS[:, 0] = np.linspace(1 + len(DF), len(DF) + BA, BA)
     for i in range(0, BA):
         # Generate the growth rate for each piglet
-        DS[i, 10] = GenerateGrowthRate()
+        DS[i, 10] = GenerateGrowthRate(growth_rate_logistic_model_1)
         # Generate weight for each piglet
-        DS[i, 1] = CalculateWeight(D, DS[i, 10])
+        DS[i, 1] = CalculateWeightLogistic(D, DS[i, 10])
         # Generate the back fat depth for each piglet
         DS[i, 2] = CalculateBackFat(DS[i, 1])
     # Assign farm

@@ -24,8 +24,8 @@ def Int_Distribution(Sigma, Mu):
 #   y - the updated weight of the pig
 
 
-''' Now two functions separate for gompertz and logistic. Make sure that this
-corresponds to the right mean and variance when you implement'''
+# Now two functions separate for gompertz and logistic. Make sure that this
+# corresponds to the right mean and variance when you implement
 def CalculateWeightLogistic(t, growth_rate):
     y = 240 / (1 + 30 * np.exp(-growth_rate * t))
     return y
@@ -41,11 +41,10 @@ def CalculateWeightLinear(t, growth_rate):
     return y
 
 
-# Function to determine the growth rate of a new born piglet
+# Function to determine the growth rate of a new born piglet based on a certain mean and variance
 # Takes:
 # Returns:
 #   GrowthRate - The growth rate of the pig
-#Generates growth_rate based on a certain mean and variance
 def GenerateGrowthRate(mean_and_variance):
     GrowthRate = np.random.normal(mean_and_variance[0], math.sqrt(mean_and_variance[1]), 1)
     return GrowthRate
@@ -74,26 +73,6 @@ def BornAlive(SP):
     return Value
 
 
-# Function to generate all the new data for each for each piglet a sow has birthed
-# Takes:
-#   D - The day the simulation is on
-#   SN - The sow number of the sow birthing the piglet
-#   SP - The sow parity of the sow birthing the piglet
-#   F - The Farm the piglet is birthed onto
-#   SP_Mean - The list of mean piglets born alive depending on sow parity
-#   SP_SD - The list of standard deviations of piglets born alive depending on sow parity
-#   WeightMean - The mean weight of piglets born alive
-#   WeightSD - The standard deviation of weights of piglets born alive
-#   BF_Mean - The mean depth of back far of piglets born alive
-#   BF_SD - The standard deviation of depths of back far of piglets born alive
-#   PregMean - The mean length of pregnancy for sows
-#   PregSD - The standard deviation of pregnancy periods
-#   DF - The already existing dataset of piglets (If none a dummy is passed)
-#   DF_Set - A True/False variable saying whether there is already a dataset of piglets
-#   earnings - the value of the pig when sold (set to None here)
-# Returns:
-#   DS - The dataset of piglets
-
 # Mean and variance, mean takes position 0 and variance takes 1 in these arrays
 growth_rate_logistic_model_1 = [0.018460179351268462, 9.078204438994627e-08]
 growth_rate_logistic_model_2 = [0.02387738773877388, 2.910790462317891e-06]
@@ -102,6 +81,18 @@ growth_rate_gompertz_model_2 = [0.026602660266026604, 3.3640061009134556e-06]
 growth_rate_linear_model = [0.060555555555, 0.04534777]
 
 
+# Function to generate all the new data for each for each piglet a sow has birthed
+# Takes:
+#   D - The day the simulation is on
+#   SN - The sow number of the sow birthing the piglet
+#   SP - The sow parity of the sow birthing the piglet
+#   F - The Farm the piglet is birthed onto
+#   PregMean - The mean length of pregnancy for sows
+#   PregSD - The standard deviation of pregnancy periods
+#   DF - The already existing dataset of piglets (If none a dummy is passed)
+#   DF_Set - A True/False variable saying whether there is already a dataset of piglets
+# Returns:
+#   DS - The dataset of piglets
 def GenPigletData(D, SN, SP, F, PregMean, PregSD, DF, DF_Set, growth_curve, mean_and_var):
     # Calculate the number of piglets the sow has birthed
     BA = BornAlive(SP)
@@ -141,12 +132,11 @@ def GenPigletData(D, SN, SP, F, PregMean, PregSD, DF, DF_Set, growth_curve, mean
 # Function to update sow and piglet dataset for all sows in the sow dataset
 # Takes:
 #   D - The day the simulation is on
-#   SP_Mean - The list of mean piglets born alive depending on sow parity
-#   SP_SD - The list of standard deviations of piglets born alive depending on sow parity
 #   PregMean - The mean length of pregnancy for sows
 #   PregSD - The standard deviation of pregnancy periods
 #   SowDS - The sow dataset
 #   SetDS - A True/False variable saying whether there is already a dataset of piglets
+#   DS - The dataset of piglets
 # Returns:
 #   DS - The dataset of piglets
 #   SetDS - A True/False variable saying whether there is already a dataset of piglets

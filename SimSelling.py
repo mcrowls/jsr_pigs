@@ -11,6 +11,7 @@ sellable_backfat = 10
 #                          'dayInseminated':Piglet[:, 4], 'birthingDate':Piglet[:, 5], 'aliveBooelan':Piglet[:, 6],
 #                          'sowNumber':Piglet[:, 7], 'sowParity':Piglet[:, 8],'initialAge':Piglet[:, 9]})
 
+
 # returns the value made on each pig as a dataframe, plus the total profit.
 def return_pig_value(day, df_as_numpy, numSold):
     import pandas as pd
@@ -20,7 +21,7 @@ def return_pig_value(day, df_as_numpy, numSold):
                     'aliveBooelan', 'sowNumber', 'sowParity', 'initialAge', 'growth_constant', 'earning']
     source_df = pd.DataFrame(
         {'pigID': df_as_numpy[:, 0], 'weight': df_as_numpy[:, 1], 'backFat': df_as_numpy[:, 2], 'farm': df_as_numpy[:, 3],
-         'dayInseminated': df_as_numpy[:, 4], 'birthingDate': df_as_numpy[:, 5], 'aliveBooelan': df_as_numpy[:, 6],
+         'dayInseminated': df_as_numpy[:, 4], 'birthingDate': df_as_numpy[:, 5], 'aliveBoolean': df_as_numpy[:, 6],
          'sowNumber': df_as_numpy[:, 7], 'sowParity': df_as_numpy[:, 8], 'initialAge': df_as_numpy[:, 9],
          'growth_constant': df_as_numpy[:, 10], 'earning': df_as_numpy[:, 11]})
 
@@ -31,13 +32,25 @@ def return_pig_value(day, df_as_numpy, numSold):
     backFatPenalties = [underFiftyKGPenalty, fiftyToSixtyFiveKGPenalty, sixtyFiveToHundredFiveKGPenalty]
     weight_brackets = [[0, 50], [50, 65], [65, 105]]
 
-    # take heaviest pigs exclusively to sell
-    # pigs being sold are set to df (in pd.DataFrame form). All not being sold are set to df_as_numpy, (in numpy array)
+    """take heaviest pigs exclusively to sell. For pigs being sold (heaviest alive pigs in source_df) we find the minimum
+    weight, to allow us to set alive = 0 all pigs being killed iteration. Allows nparray to store all pigs ever
+    (instead of just alive ones)"""
+    # pigs being sold are set to df (in pd.DataFrame form). Find min weight from batch being killed
     source_df = source_df.sort_values(by=['weight'], ascending=False)
+    df = source_df[source_df["aliveBoolean"] == 1]
+    df = df.iloc[0:numSold]
+    min_weight_sold = df["weight"].min()
+
+    # set killed activeBoolean = 0 and re-sort by ID so looping updates are done to the correct pigs in the np.array
+    source_df.loc[(source_df["aliveBoolean"] == 1) & (source_df["weight"] >= min_weight_sold), "aliveBoolean"] = 0
+    source_df = source_df.sort_values(by=['pigID'], ascending=False)
+    df_as_numpy = source_df.to_numpy()
+
     print("length of source_df: {}".format(len(source_df)))
-    df = source_df.iloc[0:numSold]
-    df_as_numpy = source_df.iloc[numSold:]
-    df_as_numpy = df_as_numpy.to_numpy()
+    print("length of df_as_numpy: {}".format(len(df_as_numpy)))
+    print("length of df: {}".format(len(df)))
+    print("minimum weight of pigs killed: {}".format(min_weight_sold))
+
 
     # convert to deadweights (and save live weight as well)
     df["liveWeight"] = df["weight"]
@@ -61,6 +74,7 @@ def return_pig_value(day, df_as_numpy, numSold):
 
     # calculate max profit
     earnings = sum(df["earning"])
+    df["deathDate"] = day
 
     return df_as_numpy, df, earnings
 

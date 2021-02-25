@@ -16,14 +16,6 @@ def Int_Distribution(Sigma, Mu):
     return Value
 
 
-# Function to determine the weight of a new born piglet
-# Takes:
-#   t - Time in days
-#   growth_rate - the growth rate of the piglet
-# Returns:
-#   y - the updated weight of the pig
-
-
 # Now two functions separate for gompertz and logistic. Make sure that this
 # corresponds to the right mean and variance when you implement
 def CalculateWeightLogistic(t, growth_rate):

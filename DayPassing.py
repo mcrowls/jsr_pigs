@@ -20,10 +20,10 @@ def UpdateBackFat(weight):
 #   D - The day in the simulation
 # Returns:
 #   DS - The updated dataset of piglets
-def DayUpdatePiglets(DS, D):
+def DayUpdatePiglets(DS, D, model):
     for i in range(0, len(DS)):
         # Update weight using time (D) and growth rate for pig DS[i, 10]
-        DS[i, 1] = CalculateWeight(D, DS[i, 10])
+        DS[i, 1] = model(D, DS[i, 10])
         # Update back fat using weight since backfat is assumed to be directly proportional to weight 
         DS[i, 2] = UpdateBackFat(DS[i, 1])
         # Update age if alive and born

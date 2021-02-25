@@ -29,7 +29,7 @@ while Day <= SimVar.SimRunTime:
     if InitiatedPigletDataset:
         PigletDF = DayPassing.DayUpdatePiglets(PigletDF, Day)
 
-    # Performs an insemination event every certain amount of days
+    # Performs an insemination event every certain amount of days for each farm
     if Day % SimVar.InseminationFrequencyEB == 1:
         PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                      SowDF[np.where(SowDF[:, 3] == 1)],

@@ -8,14 +8,6 @@ from SimSelling import return_pig_value
 import numpy as np
 import pandas as pd
 
-# Choose growth rate:
-# growth_rate_logistic_model_1
-# growth_rate_logistic_model_2
-# growth_rate_gompertz_model_1
-# growth_rate_gompertz_model_2
-# growth_rate_linear_model
-GrowthRate = SimVar.growth_rate_logistic_model_2
-
 # Initiate Variables
 Day = 1
 InitiatedPigletDataset = False
@@ -41,17 +33,17 @@ while Day <= SimVar.SimRunTime:
         PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                      SowDF[np.where(SowDF[:, 3] == 1)],
                                                                      InitiatedPigletDataset, PigletDF, SimVar.Model,
-                                                                     GrowthRate)
+                                                                     SimVar.GrowthRate)
     if Day % SimVar.InseminationFrequencyHW == 1:
         PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                      SowDF[np.where(SowDF[:, 3] == 2)],
                                                                      InitiatedPigletDataset, PigletDF, SimVar.Model,
-                                                                     GrowthRate)
+                                                                     SimVar.GrowthRate)
     if Day % SimVar.InseminationFrequencySB == 1:
         PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                      SowDF[np.where(SowDF[:, 3] == 3)],
                                                                      InitiatedPigletDataset, PigletDF, SimVar.Model,
-                                                                     GrowthRate)
+                                                                     SimVar.GrowthRate)
 
     # removes pigs from PigletDF, slaughtering and selling them. Adds slaughter data to SoldPigsDF (pd.DataFrame form)
     if (Day % SimVar.SellingPolicy[0] == 1) and Day >= SimVar.DaysUntilBeginSelling:

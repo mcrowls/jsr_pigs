@@ -37,42 +37,34 @@ xs = np.linspace(0,350, 10000)
 # T is different for every pig and is simply the date since they were born
 # find birth date, find death date then find date inbetween and use as growth rate
 # for lot of pigs [0]
-<<<<<<< HEAD
 death_date = get_individual_date(dates[5])
 T = days_since_jan_01(death_date,days_from_birth_to_death[5])
 
-=======
 death_date = get_individual_date(dates[4])
 T = days_since_jan_01(death_date,days_from_birth_to_death[4])
->>>>>>> fb60dc9b3c6c4b41aa3148093bc06a4d23fdf534
 
 growth_rates = np.linspace(0, 1, 10000)
 # returns the parameters for function of birth rates
 #a,b,d = find_growth_rates(cos_x)
 
-xi = np.linspace(0,1000, 10000)
-print(growth_rate(xi,0,a,b,d))
-max_growth_rate = max(growth_rate(xi,0,a,b,d))
-min_growth_rate = min(growth_rate(xi,0,a,b,d))
+def y_linear(xs,growth_rate):
+    return growth_rate*xs + 7
 
-# shift is days taken to wean
-shift = 30
-x = 0
-<<<<<<< HEAD
-y_logistic = logistic(xs,growth_rate(x,T,a,b,d),shift)
-y_logistic_max = logistic(xs,max_growth_rate,shift)
-y_logistic_min = logistic(xs,min_growth_rate,shift)
-=======
-best_growth_rate = minimise_error_logistic(xs, weights, growth_rates, shift)
-y_logistic = logistic(xs, best_growth_rate, shift)
->>>>>>> fb60dc9b3c6c4b41aa3148093bc06a4d23fdf534
+growth_rate = 0.605555
+ms =[]
+for i in range(len(days_from_birth_to_death)):
+    ms.append((weight_out[i]-weaning_weights[i])/days_from_birth_to_death[i])
+
+
+print(np.std(ms))
+
+y_lin = y_linear(xs,growth_rate)
 
 plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning')
 plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')
 plt.scatter(days_from_birth_to_death, weight_out, label='selling')
-plt.plot(xs, y_logistic, label='logistic model',color="orange")
-plt.plot(xs, y_logistic_max, label='logistic model max growth rate',color="blue")
-plt.plot(xs, y_logistic_min, label='logistic model min growth rate',color="red")
+plt.plot(xs, y_lin, label='logistic model',color="orange")
+
 
 plt.xlabel('days since birth')
 plt.ylabel('weight (kg)')

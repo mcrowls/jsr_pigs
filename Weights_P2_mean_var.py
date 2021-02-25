@@ -3,8 +3,6 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 
-print("hello world")
-
 def nd_maker():
     weight_csv = pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/Weight_Data.csv')
 
@@ -51,6 +49,7 @@ def nd_maker():
     # creates two random normal distributions that can be used in models
     weight_ND = np.random.normal(mean_weight,var_weight, 1000)
     weight_out_ND = np.random.normal(mean_weight_out,var_weight_out, 1000)
+    print(mean_weight_out, var_weight_out)
     P2_ND = np.random.normal(mean_p2,var_p2, 1000)
 
     # plots the normal distributions
@@ -60,13 +59,14 @@ def nd_maker():
     plt.xlabel('weight of pigs')
     plt.ylabel('weight (kg)')
     plt.legend(loc='best')
-    plt.show()
+
     x = np.linspace(mean_weight_out - 3*np.sqrt(var_weight_out),mean_weight_out + 3*np.sqrt(var_weight_out), 100)
     plt.plot(x, stats.norm.pdf(x, mean_weight_out, np.sqrt(var_weight_out)))
-    plt.show()
+
     x = np.linspace(mean_p2 - 3*np.sqrt(var_p2),mean_p2 + 3*np.sqrt(var_p2), 100)
     plt.plot(x, stats.norm.pdf(x, mean_p2, np.sqrt(var_p2)))
-    plt.show()
+
+
 
 
 

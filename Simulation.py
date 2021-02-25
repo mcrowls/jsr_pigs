@@ -52,8 +52,8 @@ for i in range(0, len(SimVar.SellingPolicies)):
                                                                          SowDF[np.where(SowDF[:, 3] == 3)],
                                                                          InitiatedPigletDataset, PigletDF, model, meanVar)
             print("New pig population total: {}".format(len(PigletDF)))
-        # change pigs in PigletDF to aliveBooelan=0.
-        # Adds slaughter data to SoldPigsDF (pd.DataFrame form)
+
+        # Adds slaughter data to SoldPigsDF (pd.DataFrame form) if the day is a day to sell in the selling policy
         if (Day % SimVar.SellingPolicies[i][0] == 1) and Day >= SimVar.DaysUntilBeginSelling:
             PigletDF, PigletPandasDF, new_earnings = return_pig_value(Day, PigletDF, SimVar.SellingPolicies[i][1])
             totalEarnings += new_earnings

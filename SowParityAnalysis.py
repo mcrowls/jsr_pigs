@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+import numpy as np
+import statistics
 
 
 # Function to find the total number born alive and the total number of births at each sow parity
@@ -130,11 +132,11 @@ HWAvgNumbersBornAlive = Average(MaxSowParity, HWNumbersBornAlive, HWSowParityCou
 SBAvgNumbersBornAlive = Average(MaxSowParity, SBNumbersBornAlive, SBSowParityCount)
 
 # Uncomment to print the lists returned for each farm
-
+'''
 print(EBAvgNumbersBornAlive, '\n')
 print(HWAvgNumbersBornAlive, '\n')
 print(SBAvgNumbersBornAlive, '\n')
-
+'''
 
 # Runs function to find:
 # the total number of pigs born alive across all farms as a list where the index corresponds to the sow parity.
@@ -144,10 +146,10 @@ AllNumbersBornAlive, AllSowParityCount = SumFarms(EBNumbersBornAlive, EBSowParit
                                                   HWSowParityCount, SBNumbersBornAlive, SBSowParityCount, MaxSowParity)
 
 # Uncomment to print the lists returned
-'''
-print(AllNumbersBornAlive)
+
+#print(AllNumbersBornAlive)
 print(AllSowParityCount, '\n')
-'''
+
 
 # Runs a function to find the avergae number of pigs born alive at each sow parity as a list where the index
 # corresponds to the sow parity
@@ -195,9 +197,24 @@ plt.legend()
 plt.title('Line graph to show how sow parity affects the live \n litter size across various farms')
 '''
 
+x6 = x1[:len(x1)-3]
+y6 = y1[:len(y1)-3]
+x7 = x5[:len(x5)-4]
+y7 = y5[:len(y5)-4]
+
+y8 = [statistics.mean(y7)] * len(y7)
+
+
+MeanFit = np.poly1d(np.polyfit(x6, y6, 3))
+SD_Fit = np.poly1d(np.polyfit(x7, y8, 1))
+Line = np.linspace(0, 15, 100)
+
+'''
 plt.figure(3)
-plt.plot(x1, y1, 'rx', x1, y1, 'r')
-plt.plot(x5, y5, 'bx', x5, y5, 'b')
+plt.plot(x1, y1, 'rx')
+plt.plot(x5, y5, 'bx')
+plt.plot(Line, MeanFit(Line), 'r')
+plt.plot(Line, SD_Fit(Line), 'b')
 plt.ylabel('Number born alive')
 plt.xlabel('Sow parity')
 plt.xlim(0, MaxSowParity + 1)
@@ -205,3 +222,7 @@ plt.ylim(0, 18)
 plt.title('Line graph to show how sow parity affects the live litter size')
 
 plt.show()
+'''
+
+print(y8[0])
+print(np.polyfit(x6, y6, 3))

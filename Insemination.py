@@ -35,6 +35,10 @@ def CalculateWeightGompertz(t, growth_rate):
     y = 240 * np.exp(-30*np.exp(-growth_rate*t))
     return y
 
+def CalculateWeightLinear(t, growth_rate):
+    y = (growth_rate * t) + 7
+    return y
+
 
 # Function to determine the growth rate of a new born piglet
 # Takes:
@@ -82,6 +86,7 @@ growth_rate_logistic_model_1 = [0.018460179351268462, 9.078204438994627e-08]
 growth_rate_logistic_model_2 = [0.02387738773877388, 2.910790462317891e-06]
 growth_rate_gompertz_model_1 = [0.0209020902090209, 1.1335600340045393e-07]
 growth_rate_gompertz_model_2 = [0.026602660266026604, 3.3640061009134556e-06]
+growth_rate_linear_model = [0.060555555555, 0.04534777]
 
 def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, PregMean, PregSD, DF, DF_Set, growth_curve, mean_and_var):
     # Calculate the number of piglets the sow has birthed

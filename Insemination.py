@@ -48,6 +48,19 @@ def CalculateBackFat(weight):
     return fat
 
 
+# Function to calculate the number of piglets born from a Sow
+# Takes:
+#   SP - The sow parity of the Sow giving birth
+# Returns:
+#   Value - The number of piglets born alive
+def BornAlive(SP):
+    mean = (9.89634522e-03 * (SP ** 3)) - (2.80572294e-01 * (SP ** 2)) + (1.75100075e+00 * SP) + 1.30828185e+01
+    SD = 3.6799672876782386
+    Value = np.random.normal(mean, SD)
+    Value = int(round(Value))
+    return Value
+
+
 # Function to generate all the new data for each for each piglet a sow has birthed
 # Takes:
 #   D - The day the simulation is on
@@ -69,7 +82,7 @@ def CalculateBackFat(weight):
 #   DS - The dataset of piglets
 def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, PregMean, PregSD, DF, DF_Set):
     # Calculate the number of piglets the sow has birthed
-    BA = Int_Distribution(SP_Mean[SP], SP_SD[SP])
+    BA = BornAlive(SP)
     # Initiate dataset
     DS = np.zeros((BA, 12))
     # Generate piglet number

@@ -35,18 +35,23 @@ for i in range(0, len(SimVar.SellingPolicies)):
 
         # Performs an insemination event every certain amount of days for each farm
         if Day % SimVar.InseminationFrequencyEB == 1:
+            print("Insemination at Eastburn")
             PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                          SowDF[np.where(SowDF[:, 3] == 1)],
                                                                          InitiatedPigletDataset, PigletDF, model, meanVar)
+            print("New pig population total: {}".format(len(PigletDF)))
         if Day % SimVar.InseminationFrequencyHW == 1:
+            print("Insemination at Haywold")
             PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                          SowDF[np.where(SowDF[:, 3] == 2)],
                                                                          InitiatedPigletDataset, PigletDF, model, meanVar)
+            print("New pig population total: {}".format(len(PigletDF)))
         if Day % SimVar.InseminationFrequencySB == 1:
+            print("Insemination at Southburn")
             PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                          SowDF[np.where(SowDF[:, 3] == 3)],
                                                                          InitiatedPigletDataset, PigletDF, model, meanVar)
-
+            print("New pig population total: {}".format(len(PigletDF)))
         # change pigs in PigletDF to aliveBooelan=0.
         # Adds slaughter data to SoldPigsDF (pd.DataFrame form)
         if (Day % SimVar.SellingPolicies[i][0] == 1) and Day >= SimVar.DaysUntilBeginSelling:

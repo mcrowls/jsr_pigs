@@ -35,6 +35,7 @@ def CalculateWeightGompertz(t, growth_rate):
     y = 240 * np.exp(-30*np.exp(-growth_rate*t))
     return y
 
+
 def CalculateWeightLinear(t, growth_rate):
     y = (growth_rate * t) + 7
     return y
@@ -44,7 +45,6 @@ def CalculateWeightLinear(t, growth_rate):
 # Takes:
 # Returns:
 #   GrowthRate - The growth rate of the pig
-
 #Generates growth_rate based on a certain mean and variance
 def GenerateGrowthRate(mean_and_variance):
     GrowthRate = np.random.normal(mean_and_variance[0], math.sqrt(mean_and_variance[1]), 1)
@@ -101,7 +101,8 @@ growth_rate_gompertz_model_1 = [0.0209020902090209, 1.1335600340045393e-07]
 growth_rate_gompertz_model_2 = [0.026602660266026604, 3.3640061009134556e-06]
 growth_rate_linear_model = [0.060555555555, 0.04534777]
 
-def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, PregMean, PregSD, DF, DF_Set, growth_curve, mean_and_var):
+
+def GenPigletData(D, SN, SP, F, PregMean, PregSD, DF, DF_Set, growth_curve, mean_and_var):
     # Calculate the number of piglets the sow has birthed
     BA = BornAlive(SP)
     # Initiate dataset
@@ -155,17 +156,17 @@ def GenPigletData(D, SN, SP, F, SP_Mean, SP_SD, PregMean, PregSD, DF, DF_Set, gr
 the mean and variance array from one of the 4 above. This way, we can see how this
 varies with data generated from both the datasets'''
 
-def Insemination(D, SP_Mean, SP_SD, PregMean, PregSD, SowDS, SetDS,
-                 DS, model, mean_and_var):
+
+def Insemination(D, PregMean, PregSD, SowDS, SetDS, DS, model, mean_and_var):
     # Iterates through sows adding more piglets to the piglet dataset by either creating a piglet dataset or
     # concatenating them to the end of the existing piglet dataset
     for i in range(0, len(SowDS)):
         if not SetDS:
-            DS = GenPigletData(D, int(SowDS[i, 0]), int(SowDS[i, 1]), int(SowDS[i, 2]), SP_Mean, SP_SD, PregMean,
+            DS = GenPigletData(D, int(SowDS[i, 0]), int(SowDS[i, 1]), int(SowDS[i, 2]), PregMean,
                                PregSD, DS, SetDS, model, mean_and_var)
             SetDS = True
         else:
-            TempDS = GenPigletData(D, int(SowDS[i, 0]), int(SowDS[i, 1]), int(SowDS[i, 2]), SP_Mean, SP_SD, PregMean,
+            TempDS = GenPigletData(D, int(SowDS[i, 0]), int(SowDS[i, 1]), int(SowDS[i, 2]), PregMean,
                                    PregSD, DS, SetDS, model, mean_and_var)
             DS = np.concatenate((DS, TempDS))
     return DS, SetDS

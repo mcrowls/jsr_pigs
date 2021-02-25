@@ -24,13 +24,25 @@ SowDF = GenerateSowParityDataset.GenerateSowParityDataSet(InitVar.GenerateSP_EB,
 
 # Runs for length of the simulation
 while Day <= SimVar.SimRunTime:
+
     # Updates piglet dataset from the second day onwards
     if InitiatedPigletDataset:
         PigletDF = DayPassing.DayUpdatePiglets(PigletDF, Day)
+
     # Performs an insemination event every certain amount of days
-    if Day % SimVar.InseminationFrequency == 1:
+    if Day % SimVar.InseminationFrequencyEB == 1:
         PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
-                                                                     SowDF, InitiatedPigletDataset, PigletDF)
+                                                                     SowDF[np.where(SowDF[:, 3] == 1)],
+                                                                     InitiatedPigletDataset, PigletDF)
+    if Day % SimVar.InseminationFrequencyHW == 1:
+        PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
+                                                                     SowDF[np.where(SowDF[:, 3] == 2)],
+                                                                     InitiatedPigletDataset, PigletDF)
+    if Day % SimVar.InseminationFrequencySB == 1:
+        PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
+                                                                     SowDF[np.where(SowDF[:, 3] == 3)],
+                                                                     InitiatedPigletDataset, PigletDF)
+
     # removes pigs from PigletDF, slaughtering and selling them. Adds slaughter data to SoldPigsDF (pd.DataFrame form)
     if (Day % SimVar.SellingPolicy[0] == 1) and Day >= SimVar.DaysUntilBeginSelling:
         PigletDF, PigletPandasDF, new_earnings = return_pig_value(Day, PigletDF, SimVar.SellingPolicy[1])

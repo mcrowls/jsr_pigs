@@ -4,7 +4,9 @@
 SimRunTime = 208
 
 # How often there is an insemination event
-InseminationFrequency = 14
+InseminationFrequencyEB = 35
+InseminationFrequencyHW = 14
+InseminationFrequencySB = 35
 
 # How often to sell pigs, and how many to sell - format: [days between selling, number to sell]
 SellingPolicy = [14, 2000]

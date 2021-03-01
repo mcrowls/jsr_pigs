@@ -70,7 +70,7 @@ growth_rate_logistic_model_1 = [0.018460179351268462, 9.078204438994627e-08]
 growth_rate_logistic_model_2 = [0.02387738773877388, 2.910790462317891e-06]
 growth_rate_gompertz_model_1 = [0.0209020902090209, 1.1335600340045393e-07]
 growth_rate_gompertz_model_2 = [0.026602660266026604, 3.3640061009134556e-06]
-growth_rate_linear_model = [0.060555555555, 0.04534777]
+growth_rate_linear_model = [0.60555555555, 0.04534777]
 
 
 # Function to generate all the new data for each for each piglet a sow has birthed
@@ -87,7 +87,7 @@ growth_rate_linear_model = [0.060555555555, 0.04534777]
 #   DS - The dataset of piglets
 def GenPigletData(D, SN, SP, F, PregMean, PregSD, DF, DF_Set, growth_curve, mean_and_var):
     # Calculate the number of piglets the sow has birthed
-    BA = BornAlive(SP)
+    BA = 16 # BornAlive(SP)
     # Initiate dataset
     DS = np.zeros((BA, 12))
     # Generate piglet number

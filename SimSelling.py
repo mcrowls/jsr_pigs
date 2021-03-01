@@ -30,14 +30,13 @@ def return_pig_value(day, df_as_numpy, numSold):
     source_df = source_df.sort_values(by=['pigID'], ascending=False)
     df_as_numpy = source_df.to_numpy()
 
-    print("\nPoint of sale info:")
     print("length of source_df: {}".format(len(source_df)))
     print("Number of dead pigs in source_df/PigletDF: {}".format(len(source_df[source_df["aliveBoolean"] == 0])))
-    print("length of df_as_numpy: {}".format(len(df_as_numpy)))
-    print("length of df: {}".format(len(df)))
+    print("Number of pigs remaining in population: {}".format(len(df_as_numpy)))
+    print("Number of pigs sold: {}".format(len(df)))
     print("minimum weight of pigs killed: {}".format(min_weight_sold))
 
-    # convert to deadweights (and save live weight as well)
+    # convert to dead weights (and save live weight as well)
     df["liveWeight"] = df["weight"]
     df["weight"] = df["weight"] * 0.754
 

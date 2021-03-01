@@ -50,6 +50,15 @@ growth_rates = np.linspace(0, 1, 10000)
 def y_linear(days,growth_rate):
     return growth_rate*days + 7
 
+def CalculateWeightLogistic(t, growth_rate):
+    y = 240 / (1 + 30 * np.exp(-growth_rate * t))
+    return y
+
+
+def CalculateWeightGompertz(t, growth_rate):
+    y = 240 * np.exp(-30*np.exp(-growth_rate*t))
+    return y
+
 growth_rate = 0.605555
 ms =[]
 for i in range(len(days_from_birth_to_death)):
@@ -59,6 +68,9 @@ for i in range(len(days_from_birth_to_death)):
 print(np.std(ms))
 
 y_lin = y_linear(xs,growth_rate)
+
+y_log = CalculateWeightLogistic(xs,growth_rate_log)
+y_gom = CalculateWeightGompertz(xs, growth_rate_gom)
 
 plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning')
 plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')

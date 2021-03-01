@@ -61,7 +61,7 @@ print(np.std(ms))
 y_lin = y_linear(xs,growth_rate)
 
 plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning')
-plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')
+#plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')
 plt.scatter(days_from_birth_to_death, weight_out, label='selling')
 plt.plot(xs, y_lin, label='logistic model',color="orange")
 

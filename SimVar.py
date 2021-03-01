@@ -16,10 +16,10 @@ Add on the gestation and I’d expect animals served today to be selling the res
  and 17th December."""
 # value's taken from the inverse function of the growth rate are listed below. They're not perfect, but match our models
 # well and lie close or inside to the range given by Grant above
-gompertz1 = 128
-gompertz2 = 178
-logistic1 = 108
-logistic2 = 142
+gompertz1 = 188
+gompertz2 = 148
+logistic1 = 152
+logistic2 = 118
 listOfBeginSellingDates = [gompertz1, gompertz2, logistic1, logistic2]
 NormalDaysUntilBeginSelling = 175
 

@@ -10,7 +10,7 @@ import pandas as pd
 
 # set up growth rate model and mean/var
 model = Insemination.CalculateWeightLogistic
-meanVar = Insemination.growth_rate_gompertz_model_1
+meanVar = Insemination.growth_rate_logistic_model_2
 totalEarningsList = []
 SoldPigsList = []
 overweightPigsList = []
@@ -22,7 +22,7 @@ for i in range(0, len(SimVar.sellingPoliciesLong)):
 
     # Initiate Variables
     Day = 1
-    BeginSellingDate = SimVar.listOfBeginSellingDates[0]
+    BeginSellingDate = SimVar.listOfBeginSellingDates[3]
     InitiatedPigletDataset = False
     totalEarnings = 0
     PigletDF = np.array([0])
@@ -36,7 +36,7 @@ for i in range(0, len(SimVar.sellingPoliciesLong)):
 
     # Runs for length of the simulation
     while Day <= SimVar.SimRunTime:
-        print("Day: {}".format(Day))
+        # print("Day: {}".format(Day))
         # Updates piglet dataset from the second day onwards
         if InitiatedPigletDataset:
             PigletDF = DayPassing.DayUpdatePiglets(PigletDF, Day, model)
@@ -45,17 +45,17 @@ for i in range(0, len(SimVar.sellingPoliciesLong)):
             PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                          SowDF[np.where(SowDF[:, 3] == 1)],
                                                                          InitiatedPigletDataset, PigletDF, model, meanVar)
-            print("Insemination at Eastburn, new pig population total: {}".format(len(PigletDF)))
+            # print("Insemination at Eastburn, new pig population total: {}".format(len(PigletDF)))
         if (Day + 1) % SimVar.InseminationFrequencyHW == 1: # Day+1 as pigs are never inseminated on the same week
             PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                          SowDF[np.where(SowDF[:, 3] == 2)],
                                                                          InitiatedPigletDataset, PigletDF, model, meanVar)
-            print("Insemination at Haywold, new pig population total: {}".format(len(PigletDF)))
+            # print("Insemination at Haywold, new pig population total: {}".format(len(PigletDF)))
         if (Day + 2) % SimVar.InseminationFrequencySB == 1: # Day+2 as pigs are never inseminated on the same week
             PigletDF, InitiatedPigletDataset = Insemination.Insemination(Day, DepVar.PregPeriodMean, DepVar.PregPeriodSD,
                                                                          SowDF[np.where(SowDF[:, 3] == 3)],
                                                                          InitiatedPigletDataset, PigletDF, model, meanVar)
-            print("Insemination at Southburn, new pig population total: {}".format(len(PigletDF)))
+            # print("Insemination at Southburn, new pig population total: {}".format(len(PigletDF)))
 
         # Adds slaughter data to SoldPigsDF (pd.DataFrame form) if the day is a day to sell in the selling policy
         if (Day % SimVar.sellingPoliciesLong[i][0] == 1) and Day >= BeginSellingDate:
@@ -80,4 +80,4 @@ print("sellingPoliciesList: {}".format(sellingPoliciesList))
 print("growthCurveList: {}".format(growthCurveList))
 print("overweightPigsList: {}".format(overweightPigsList))
 export_df = pd.DataFrame([sellingPoliciesList, growthCurveList, totalEarningsList, SoldPigsList, overweightPigsList])
-export_df.to_csv("totalEarningsData.csv")
+export_df.to_csv("totalEarningsDataLogistic_1.csv")

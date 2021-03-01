@@ -68,14 +68,18 @@ for i in range(len(days_from_birth_to_death)):
 print(np.std(ms))
 
 y_lin = y_linear(xs,growth_rate)
+growth_rate_log = 0.018460179351268462
+growth_rate_gom = 0.0209020902090209
 
 y_log = CalculateWeightLogistic(xs,growth_rate_log)
 y_gom = CalculateWeightGompertz(xs, growth_rate_gom)
 
 plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning')
-plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')
+#plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')
 plt.scatter(days_from_birth_to_death, weight_out, label='selling')
-plt.plot(xs, y_lin, label='logistic model',color="orange")
+plt.plot(xs, y_lin, label='linear model',color="orange")
+plt.plot(xs, y_log, label='logistic model',color="blue")
+plt.plot(xs, y_gom, label='gompertz model',color="red")
 
 
 plt.xlabel('days since birth')

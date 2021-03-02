@@ -20,7 +20,8 @@ gompertz1 = 188
 gompertz2 = 148
 logistic1 = 152
 logistic2 = 118
-listOfBeginSellingDates = [gompertz1, gompertz2, logistic1, logistic2]
+linear = 175
+listOfBeginSellingDates = [gompertz1, gompertz2, logistic1, logistic2, linear]
 NormalDaysUntilBeginSelling = 175
 
 """
@@ -30,7 +31,7 @@ births are (relative to the first pig insemination date). Scaled up to a year th
 36 repeats of the sale pattern).
 """
 # Length of time for the simulation runs for in days
-SimRunTime = gompertz1 + 70 # DaysUntilBeginSelling + 360 -----535
+SimRunTime = gompertz1 + 360 # DaysUntilBeginSelling + 360 -----535
 
 # How often there is an insemination event (2 weeks and 5 weeks)
 InseminationFrequencyEB = 35
@@ -42,6 +43,7 @@ InseminationFrequencySB = 35
 With 10 weeks to play with we can try lots of different arrangements for fixed selling strategies. As 2000 pigs are inseminated each 
 """
 SellingPolicies = [14, 3600], [7, 1800], [10, 2570], [35, 9000]
+bestSellingPolicy = [65, 16714]
 
 # find selling policies that will sell 18k pigs in 10 weeks
 import numpy as np

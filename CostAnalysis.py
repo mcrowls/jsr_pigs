@@ -3,7 +3,8 @@ Plots reduction from max value for pig against fat depth for different pigs, sho
 """
 from matplotlib import pyplot as plt
 import numpy as np
-import csv
+import pandas as pd
+# import seaborn as sns; sns.set_theme()
 
 
 def pig_value(pigBackFatPenalty, pigWeight):
@@ -12,8 +13,29 @@ def pig_value(pigBackFatPenalty, pigWeight):
 # import real data to plot also
 reader = np.loadtxt(open("weight_data.csv", "rb"), delimiter=",", skiprows=1)
 real_average_weights = reader[:, -3]
+real_average_weights = [i*0.754 for i in real_average_weights]
 real_p2_backfat_depth = reader[:, -1]
-print(real_p2_backfat_depth)
+
+# import BestSimulationLogistic1 weights to plot as well
+reader2 = pd.read_csv("SoldPigsDF_best_logistic_policy_[65, 16714].csv", delimiter=",")
+sim_average_weights = reader2["weight"]
+sim_average_weights = [i*0.754 for i in sim_average_weights]
+sim_p2_backfat_depth = reader2["backFat"]
+print("sim_average_weights: {}".format(len(sim_average_weights)))
+print("sim_p2_backfat_depth: {}".format(sim_p2_backfat_depth))
+
+for i in range(0, len(sim_p2_backfat_depth)):
+    if sim_p2_backfat_depth[i] < 10:
+        sim_p2_backfat_depth[i] = 0
+    elif 10 <= sim_p2_backfat_depth[i] < 12:
+        sim_p2_backfat_depth[i] = 1
+    elif 12 <= sim_p2_backfat_depth[i] < 14:
+        sim_p2_backfat_depth[i] = 2
+    elif 14 <= sim_p2_backfat_depth[i] < 16:
+        sim_p2_backfat_depth[i] = 3
+    elif 16 <= sim_p2_backfat_depth[i]:
+        sim_p2_backfat_depth[i] = 4
+
 for i in range(0, len(real_p2_backfat_depth)):
     if real_p2_backfat_depth[i] < 10:
         real_p2_backfat_depth[i] = 0
@@ -23,7 +45,8 @@ for i in range(0, len(real_p2_backfat_depth)):
         real_p2_backfat_depth[i] = 2
     elif 14 <= real_p2_backfat_depth[i] < 16:
         real_p2_backfat_depth[i] = 3
-print(real_p2_backfat_depth)
+    elif 16 <= real_p2_backfat_depth[i]:
+        real_p2_backfat_depth[i] = 4
 
 fatDepths = ["<10", "10-12", "13-14", "15-16", "17-18", ">19"]
 
@@ -111,8 +134,11 @@ print(allValues.shape)
 
 fig, ax = plt.subplots()
 ax.imshow(allValues, cmap='hot', interpolation='nearest', aspect='auto')
-ax.set(xlabel='Fat depth (mm)', ylabel='Weight of the pig', title='back fat depth against weight\n'
+# ax = sns.heatmap(allValues, xticklabels=6, yticklabels=False)
+ax.set(xlabel='Fat depth (mm)', ylabel='Weight of the pig (kg)', title='back fat depth against weight\n'
                                                                     'values on grid are values for pig')
 ax.scatter(real_p2_backfat_depth, real_average_weights)
+ax.scatter(sim_p2_backfat_depth, sim_average_weights)
+ax.legend(["Real sold weights"])
 
 plt.show()

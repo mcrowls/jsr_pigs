@@ -59,7 +59,7 @@ def CalculateWeightGompertz(t, growth_rate):
     y = 240 * np.exp(-30*np.exp(-growth_rate*t))
     return y
 
-growth_rate = 0.708555
+growth_rate = 0.725555
 ms =[]
 for i in range(len(days_from_birth_to_death)):
     ms.append((weight_out[i]-weaning_weights[i])/days_from_birth_to_death[i])
@@ -77,9 +77,9 @@ y_gom = CalculateWeightGompertz(xs, growth_rate_gom)
 plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning')
 plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')
 plt.scatter(days_from_birth_to_death, weight_out, label='selling')
-#plt.plot(xs, y_lin, label='linear model',color="orange")
-plt.plot(xs, y_log, label='logistic model',color="orange")
-plt.plot(xs, y_gom, label='gompertz model',color="blue")
+plt.plot(xs, y_lin, label='linear model',color="orange")
+plt.plot(xs, y_log, label='logistic model',color="blue")
+plt.plot(xs, y_gom, label='gompertz model',color="red")
 
 
 plt.xlabel('days since birth')

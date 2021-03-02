@@ -64,22 +64,24 @@ for month in grouped_dates:
     for i in range(np.shape(month)[0]):
         xs.extend((30, days_from_birth_to_mid[i], days_from_birth_to_death[i]))
         ys.extend((7, ave_weight[i], weight_out[i]))
-    rmse, growth_rate = minimise_error_gombertz(xs, ys, growth_rates, shift)
+    rmse, growth_rate = minimise_error_logistic(xs, ys, growth_rates, shift)
     growth_rate_array.append(growth_rate)
     x_plot = np.linspace(0, 350, 1000)
-    y_plot = gombertz(x_plot, growth_rate, shift)
-    #markers, caps, bars = plt.errorbar(x_plot, y_plot, xerr=None, yerr=rmse, ecolor=None)
-    #plt.scatter(days, weights, label='gr = '+str(growth_rate)[0:6])
-    #plt.plot(x_plot, y_plot)
+    y_plot = logistic(x_plot, growth_rate, shift)
+    markers, caps, bars = plt.errorbar(x_plot, y_plot, xerr=None, yerr=rmse, ecolor=None)
+    plt.scatter(days, weights, label='gr = '+str(growth_rate)[0:6])
+    plt.plot(x_plot, y_plot)
 
-    #[bar.set_alpha(0.02) for bar in bars]
-    #[cap.set_alpha(0.02) for cap in caps]
+    [bar.set_alpha(0.02) for bar in bars]
+    [cap.set_alpha(0.02) for cap in caps]
 
 
 mean = np.mean(growth_rate_array)
 var = np.var(growth_rate_array)
+
 print(mean)
 print(var)
+'''
 sigma = math.sqrt(var)
 x = np.linspace(mean - 4*sigma, mean + 4*sigma, 1000)
 y = stats.norm.pdf(x, mean, sigma)
@@ -89,15 +91,19 @@ mean_ys = [0, np.max(y)]
 plt.plot(x, y, label='Normal Distribution')
 plt.plot(mean_xs, mean_ys, label='Mean')
 plt.legend(loc='best')
-#plt.scatter(all_days, all_weights)
-# plt.plot(x, y)
+plt.scatter(all_days, all_weights)
+plt.plot(x, y)
 '''
+
 plt.ylim(0, 240)
 plt.legend(loc='best')
+'''
 plt.xlabel('Days of growth')
 plt.ylabel('Weight(kg)')
-'''
 plt.ylim(0, 1500)
 plt.xlabel('growth rate (a.u)')
 plt.ylabel('frequency')
+'''
+plt.xlabel('Days of growth')
+plt.ylabel('Weight (kg)')
 plt.show()

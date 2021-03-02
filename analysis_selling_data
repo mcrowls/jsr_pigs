@@ -1,0 +1,6 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from datetime import date
+import random
+
+revenue_data = pd.read_csv('totalEarningsDataGompertz_1.csv')

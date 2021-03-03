@@ -74,12 +74,12 @@ growth_rate_gom = 0.0209020902090209
 y_log = CalculateWeightLogistic(xs,growth_rate_log)
 y_gom = CalculateWeightGompertz(xs, growth_rate_gom)
 
-plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning')
+plt.scatter(days_from_birth_to_wean, weaning_weights, label='weaning weights')
 plt.scatter(days_from_birth_to_mid, ave_weight, label='mid weights')
-plt.scatter(days_from_birth_to_death, weight_out, label='selling')
+plt.scatter(days_from_birth_to_death, weight_out, label='selling weights')
 plt.plot(xs, y_lin, label='linear model',color="orange")
 plt.plot(xs, y_log, label='logistic model',color="blue")
-plt.plot(xs, y_gom, label='gompertz model',color="red")
+plt.plot(xs, y_gom, label='Gompertz model',color="red")
 
 
 plt.xlabel('days since birth')

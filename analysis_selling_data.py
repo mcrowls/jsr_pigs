@@ -13,13 +13,11 @@ revenue_data = [pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/TotalEar
 ,pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/TotalEarningsData/formatted/LinearEarnings.csv'),pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/TotalEarningsData/formatted/Logistic1Earnings.csv')
 ,pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/TotalEarningsData/formatted/Logistic2Earnings.csv')]
 
-titles = ['gompertz1','gompertz2','linear', 'logistic1', 'logistic2']
-
-print(revenue_data)
+titles = ['Gompertz model dataset 1','Gompertz model dataset 2','linear model', 'logistic model dataset 1', 'logistic model dataset 2']
+markers = ['o','o','^','x','x']
 
 
 data = revenue_data[3]
-print(data)
 i = 0
 for data in revenue_data:
     selling_policy = data['[1, 257]']
@@ -28,17 +26,25 @@ for data in revenue_data:
     sold = data['sold']
     height = revenue/(sold*100)
     bars = selling_policy.tolist()
-    print(bars)
     y_pos = np.arange(len(bars))
     #plt.bar(y_pos, height)
-    plt.plot(y_pos,height,label=titles[i])
+    #plt.plot(y_pos,height,label=titles[i],marker=markers[i])
+    plt.plot(y_pos,height,label=titles[i],marker=markers[i])
     i+=1
 
+ic = 0
+for item in bars:
+    if (ic+1)%2 == 0:
+        bars[ic] = ''
 
-plt.xticks(np.arange(len(bars)), (bars),fontsize=7, rotation=45)
-plt.yticks(np.arange(0, max(height)+10,max(height)/6))
+    ic+=1
+print(bars)
+
+
+plt.xticks(np.arange(len(bars)), (bars),rotation=45)
+plt.yticks(np.arange(0, int(max(height)+50),int(max(height))/10))
 plt.xlabel('selling policies[days between selling, numbers sold at selling]')
-plt.ylabel('nominal pig value')
+plt.ylabel('Average price of pig (Sterling, £)', fontsize=12)
 plt.legend(loc='best')
 plt.ylim(90,160)
 plt.show()

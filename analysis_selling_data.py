@@ -14,12 +14,12 @@ revenue_data = [pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/TotalEar
 ,pd.read_csv('/Users/jakebeard/Documents/GitHub/jsr_pigs/TotalEarningsData/formatted/Logistic2Earnings.csv')]
 
 titles = ['Gompertz model dataset 1','Gompertz model dataset 2','linear model', 'logistic model dataset 1', 'logistic model dataset 2']
-markers = ['o','o','^','x','x']
+markers = ['o','o','s','x','x']
 
 
-data = revenue_data[3]
 i = 0
 for data in revenue_data:
+    data = data[:-35]
     selling_policy = data['[1, 257]']
 
     revenue = data['rev']
